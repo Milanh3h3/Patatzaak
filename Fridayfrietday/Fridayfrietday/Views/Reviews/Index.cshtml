@@ -1,0 +1,15 @@
+﻿<h1>Klantbeoordelingen</h1>
+
+<h2>Voeg een Review Toe</h2>
+<form asp-controller="Reviews" asp-action="Create" method="post">
+    <textarea name="review" placeholder="Schrijf hier je review..."></textarea>
+    <button type="submit">Versturen</button>
+</form>
+
+<h2>Recente Reviews</h2>
+<ul>
+    @foreach (var review in Model)
+    {
+        <li>@review.Text - @review.Date</li>
+    }
+</ul>

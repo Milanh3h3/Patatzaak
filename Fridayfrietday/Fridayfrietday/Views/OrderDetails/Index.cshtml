@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Fridayfrietday.Models.OrderDetail>
+
+<h1>Bevestig Jouw Bestelling</h1>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@item.Product.Name - @item.Quantity x €@item.Product.Price</li>
+    }
+</ul>
+
+<p>
+    Totaal: €@Model.Sum(item => item.Product.Price * item.Quantity + item.SelectedSauces.Sum(s => s.Sauce.Price))
+</p>
+
+<form asp-controller="Orders" asp-action="SubmitOrder" method="post">
+    <button type="submit">Bestelling Versturen</button>
+</form>

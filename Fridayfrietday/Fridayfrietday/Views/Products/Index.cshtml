@@ -1,0 +1,18 @@
+﻿<h1>Ons Menu</h1>
+
+<div class="menu-container">
+    @foreach (var product in Model)
+    {
+        <div class="menu-item">
+            <img src="@product.Category.Picture" alt="@product.Name" />
+            <h3>@product.Name</h3>
+            <p>€@product.Price</p>
+            <form asp-controller="Orders" asp-action="AddToCart" method="post">
+                <input type="hidden" name="productId" value="@product.Id" />
+                <button type="submit">Toevoegen</button>
+            </form>
+        </div>
+    }
+</div>
+
+<a href="/Orders/Cart" class="button">Bekijk Bestelling</a>

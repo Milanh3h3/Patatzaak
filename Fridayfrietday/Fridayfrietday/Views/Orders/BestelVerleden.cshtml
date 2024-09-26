@@ -1,0 +1,12 @@
+﻿
+<h1>Jouw Bestelgeschiedenis</h1>
+
+<ul>
+    @foreach (var order in Model)
+    {
+        <li>
+            Bestelling op @order.Date - Totaal: €@order.TotalPrice
+            <a href="/Orders/Reorder?orderId=@order.Id" class="button">Bestel Opnieuw</a>
+        </li>
+    }
+</ul>

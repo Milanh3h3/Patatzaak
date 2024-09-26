@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Fridayfrietday</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Fridayfrietday.styles.css" asp-append-version="true" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <img src="images/snackbar.png" alt="Snackbarlogo" class="logo" />
+            <p class="business-name">Snackbar</p>
+            <div class="right-side">
+                <button class="order-button">
+                    <p>Bestellen</p>
+                </button>
+                <button class="menu-button">
+                    <p>Menu</p>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div>
+                <img src="Images/snackbar.png" alt="Snackbarlogo" />
+                <p>social media plugs</p>
+            </div>
+            <div>
+                <p>Contact: info@patatzaak.com</p>
+            </div>
+            <div>
+                <h1>Adress</h1>
+                <p>Frietweg 21</p>
+                <p>1234XX Maastricht</p>
+            </div>
+            <div>
+                <h1>Openingstijden</h1>
+                <p>Ma - Do: 16:00 - 21:00</p>
+                <p>Vr - Zo: 15:00 - 22:00</p>
+            </div>
+        </div>
+
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
