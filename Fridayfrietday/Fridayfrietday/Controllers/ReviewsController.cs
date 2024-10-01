@@ -22,7 +22,7 @@ namespace Fridayfrietday.Controllers
         // GET: Reviews
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Review.ToListAsync());
+            return View(await _context.Reviews.ToListAsync());
         }
 
         // GET: Reviews/Details/5
@@ -33,7 +33,7 @@ namespace Fridayfrietday.Controllers
                 return NotFound();
             }
 
-            var review = await _context.Review
+            var review = await _context.Reviews
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (review == null)
             {
@@ -73,7 +73,7 @@ namespace Fridayfrietday.Controllers
                 return NotFound();
             }
 
-            var review = await _context.Review.FindAsync(id);
+            var review = await _context.Reviews.FindAsync(id);
             if (review == null)
             {
                 return NotFound();
@@ -124,7 +124,7 @@ namespace Fridayfrietday.Controllers
                 return NotFound();
             }
 
-            var review = await _context.Review
+            var review = await _context.Reviews
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (review == null)
             {
@@ -139,10 +139,10 @@ namespace Fridayfrietday.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var review = await _context.Review.FindAsync(id);
+            var review = await _context.Reviews.FindAsync(id);
             if (review != null)
             {
-                _context.Review.Remove(review);
+                _context.Reviews.Remove(review);
             }
 
             await _context.SaveChangesAsync();
@@ -151,7 +151,7 @@ namespace Fridayfrietday.Controllers
 
         private bool ReviewExists(int id)
         {
-            return _context.Review.Any(e => e.Id == id);
+            return _context.Reviews.Any(e => e.Id == id);
         }
     }
 }

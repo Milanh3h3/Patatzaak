@@ -8,14 +8,13 @@ namespace Fridayfrietday
     public class DBContext : DbContext
     {
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Sauce> Sauces { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<OrderDetailSauce> OrderDetailSauces { get; set; }
-        public DbSet<Review> Review { get; set; }
-
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Sauce> Sauces { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connection = @"Data Source=.;Initial Catalog=FrituurDb; Integrated Security=SSPI; TrustServerCertificate=True;";
@@ -33,7 +32,12 @@ namespace Fridayfrietday
                 .WithMany()
                 .HasForeignKey(ods => ods.SauceId);
 
+            modelBuilder.Entity<Review>()
+                .Property(r => r.Stars)
+                .HasPrecision(2, 1);
+
             base.OnModelCreating(modelBuilder);
+
             // Category seeding
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Frieten", Picture = "frieten.png" },
@@ -43,8 +47,8 @@ namespace Fridayfrietday
 
             // Product seeding
             modelBuilder.Entity<Product>().HasData(
-                new Product { Id = 1, Name = "Friet Groot", CategoryId = 1, Price = 3.5, AllowsSauces = true, ImageLink = "friet_groot.png" },  
-                new Product { Id = 2, Name = "Friet Medium", CategoryId = 1, Price = 3.0, AllowsSauces = true, ImageLink = "friet_medium.png" },  
+                new Product { Id = 1, Name = "Friet Groot", CategoryId = 1, Price = 3.5, AllowsSauces = true, ImageLink = "friet_groot.png" },
+                new Product { Id = 2, Name = "Friet Medium", CategoryId = 1, Price = 3.0, AllowsSauces = true, ImageLink = "friet_medium.png" },
                 new Product { Id = 3, Name = "Friet Klein", CategoryId = 1, Price = 2.5, AllowsSauces = true, ImageLink = "friet_klein.png" },
                 new Product { Id = 4, Name = "Bitterballen", CategoryId = 2, Price = 4.0, AllowsSauces = true, ImageLink = "bitterballen.png" },
                 new Product { Id = 5, Name = "Frikandel", CategoryId = 2, Price = 2.0, AllowsSauces = true, ImageLink = "frikandel.png" },
@@ -63,7 +67,7 @@ namespace Fridayfrietday
 
             // Order seeding
             modelBuilder.Entity<Order>().HasData(
-                new Order { Id = 1, TotalPrice = 11, CustomerId = 1 },
+                new Order { Id = 1, TotalPrice = 11.0, CustomerId = 1 },
                 new Order { Id = 2, TotalPrice = 3.5, CustomerId = 2 }
             );
 
@@ -90,8 +94,8 @@ namespace Fridayfrietday
             // Review seeding
             modelBuilder.Entity<Review>().HasData(
                 new Review { Id = 1, Name = "John Doe", Description = "Heerlijke frietjes!", Stars = 4.5m, Date = DateTime.Now.AddDays(-10) },
-                new Review { Id = 2, Name = "Jane Smith", Description = "Snacks waren goed, maar had liever meer saus.", Stars = 3.5m, Date = DateTime.Now.AddDays(-5) });
+                new Review { Id = 2, Name = "Jane Smith", Description = "Snacks waren goed, maar had liever meer saus.", Stars = 3.5m, Date = DateTime.Now.AddDays(-5) }
+            );
         }
-
     }
 }
