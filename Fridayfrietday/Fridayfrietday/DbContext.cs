@@ -40,23 +40,23 @@ namespace Fridayfrietday
 
             // Category seeding
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Frieten", Picture = "frieten.png" },
-                new Category { Id = 2, Name = "Snacks", Picture = "snacks.png" },
-                new Category { Id = 3, Name = "Dranken", Picture = "dranken.png" }
+                new Category { Id = 1, Name = "Frieten", Picture = "Frietenmandje.png" },
+                new Category { Id = 2, Name = "Snacks", Picture = "snackslogo.png" },
+                new Category { Id = 3, Name = "Dranken", Picture = "DrinksLogo.png" }
             );
 
             // Product seeding
             modelBuilder.Entity<Product>().HasData(
-                new Product { Id = 1, Name = "Friet Groot", CategoryId = 1, Price = 3.5, AllowsSauces = true, ImageLink = "friet_groot.png" },
-                new Product { Id = 2, Name = "Friet Medium", CategoryId = 1, Price = 3.0, AllowsSauces = true, ImageLink = "friet_medium.png" },
-                new Product { Id = 3, Name = "Friet Klein", CategoryId = 1, Price = 2.5, AllowsSauces = true, ImageLink = "friet_klein.png" },
-                new Product { Id = 4, Name = "Bitterballen", CategoryId = 2, Price = 4.0, AllowsSauces = true, ImageLink = "bitterballen.png" },
-                new Product { Id = 5, Name = "Frikandel", CategoryId = 2, Price = 2.0, AllowsSauces = true, ImageLink = "frikandel.png" },
-                new Product { Id = 6, Name = "Frikandel XXL", CategoryId = 2, Price = 5.0, AllowsSauces = true, ImageLink = "frikandel_xxl.png" },
-                new Product { Id = 7, Name = "Cola", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "cola.png" },
+                new Product { Id = 1, Name = "Friet Groot", CategoryId = 1, Price = 3.5, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
+                new Product { Id = 2, Name = "Friet Medium", CategoryId = 1, Price = 3.0, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
+                new Product { Id = 3, Name = "Friet Klein", CategoryId = 1, Price = 2.5, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
+                new Product { Id = 4, Name = "Bitterballen", CategoryId = 2, Price = 4.0, AllowsSauces = true, ImageLink = "Bitterballen.png" },
+                new Product { Id = 5, Name = "FrikandelSpeciaal", CategoryId = 2, Price = 2.5, AllowsSauces = true, ImageLink = "frikandelspeciaal.png" },
+                new Product { Id = 6, Name = "Frikandel XXL", CategoryId = 2, Price = 5.0, AllowsSauces = true, ImageLink = "frikandelXXL.png" },
+                new Product { Id = 7, Name = "Cola", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "Cola.png" },
                 new Product { Id = 8, Name = "Fanta", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "fanta.png" },
-                new Product { Id = 9, Name = "Cola Light", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "cola_light.png" },
-                new Product { Id = 10, Name = "Cola Zero", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "cola_zero.png" }
+                new Product { Id = 9, Name = "Cola Light", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "ColaLight.png" },
+                new Product { Id = 10, Name = "Cola Zero", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "ColaZero.png" }
             );
 
             // Customer seeding
