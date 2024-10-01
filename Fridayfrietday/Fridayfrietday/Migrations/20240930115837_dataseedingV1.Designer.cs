@@ -4,6 +4,7 @@ using Fridayfrietday;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fridayfrietday.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20240930115837_dataseedingV1")]
+    partial class dataseedingV1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,20 +50,20 @@ namespace Fridayfrietday.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Frieten",
-                            Picture = "Frietenmandje.png"
+                            Name = "Frituren",
+                            Picture = "frituren.jpg"
                         },
                         new
                         {
                             Id = 2,
                             Name = "Snacks",
-                            Picture = "snackslogo.png"
+                            Picture = "snacks.jpg"
                         },
                         new
                         {
                             Id = 3,
                             Name = "Dranken",
-                            Picture = "DrinksLogo.png"
+                            Picture = "dranken.jpg"
                         });
                 });
 
@@ -119,13 +122,13 @@ namespace Fridayfrietday.Migrations
                         {
                             Id = 1,
                             CustomerId = 1,
-                            TotalPrice = 11.0
+                            TotalPrice = 9.5
                         },
                         new
                         {
                             Id = 2,
                             CustomerId = 2,
-                            TotalPrice = 3.5
+                            TotalPrice = 6.0
                         });
                 });
 
@@ -166,7 +169,7 @@ namespace Fridayfrietday.Migrations
                         {
                             Id = 2,
                             OrderId = 1,
-                            ProductId = 7,
+                            ProductId = 3,
                             Quantity = 1
                         },
                         new
@@ -253,90 +256,27 @@ namespace Fridayfrietday.Migrations
                             Id = 1,
                             AllowsSauces = true,
                             CategoryId = 1,
-                            ImageLink = "Frietenmandje.png",
+                            ImageLink = "friet_groot.jpg",
                             Name = "Friet Groot",
                             Price = 3.5
                         },
                         new
                         {
                             Id = 2,
-                            AllowsSauces = true,
-                            CategoryId = 1,
-                            ImageLink = "Frietenmandje.png",
-                            Name = "Friet Medium",
-                            Price = 3.0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AllowsSauces = true,
-                            CategoryId = 1,
-                            ImageLink = "Frietenmandje.png",
-                            Name = "Friet Klein",
-                            Price = 2.5
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AllowsSauces = true,
+                            AllowsSauces = false,
                             CategoryId = 2,
-                            ImageLink = "Bitterballen.png",
+                            ImageLink = "bitterballen.jpg",
                             Name = "Bitterballen",
                             Price = 4.0
                         },
                         new
                         {
-                            Id = 5,
-                            AllowsSauces = true,
-                            CategoryId = 2,
-                            ImageLink = "frikandelspeciaal.png",
-                            Name = "FrikandelSpeciaal",
-                            Price = 2.5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AllowsSauces = true,
-                            CategoryId = 2,
-                            ImageLink = "frikandelXXL.png",
-                            Name = "Frikandel XXL",
-                            Price = 5.0
-                        },
-                        new
-                        {
-                            Id = 7,
+                            Id = 3,
                             AllowsSauces = false,
                             CategoryId = 3,
-                            ImageLink = "Cola.png",
+                            ImageLink = "cola.jpg",
                             Name = "Cola",
-                            Price = 3.0
-                        },
-                        new
-                        {
-                            Id = 8,
-                            AllowsSauces = false,
-                            CategoryId = 3,
-                            ImageLink = "fanta.png",
-                            Name = "Fanta",
-                            Price = 3.0
-                        },
-                        new
-                        {
-                            Id = 9,
-                            AllowsSauces = false,
-                            CategoryId = 3,
-                            ImageLink = "ColaLight.png",
-                            Name = "Cola Light",
-                            Price = 3.0
-                        },
-                        new
-                        {
-                            Id = 10,
-                            AllowsSauces = false,
-                            CategoryId = 3,
-                            ImageLink = "ColaZero.png",
-                            Name = "Cola Zero",
-                            Price = 3.0
+                            Price = 2.0
                         });
                 });
 
@@ -362,18 +302,17 @@ namespace Fridayfrietday.Migrations
                         .HasColumnType("nvarchar(40)");
 
                     b.Property<decimal>("Stars")
-                        .HasPrecision(2, 1)
-                        .HasColumnType("decimal(2,1)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Review");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2024, 9, 21, 14, 0, 58, 503, DateTimeKind.Local).AddTicks(6829),
+                            Date = new DateTime(2024, 9, 20, 13, 58, 35, 676, DateTimeKind.Local).AddTicks(1030),
                             Description = "Heerlijke frietjes!",
                             Name = "John Doe",
                             Stars = 4.5m
@@ -381,7 +320,7 @@ namespace Fridayfrietday.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2024, 9, 26, 14, 0, 58, 503, DateTimeKind.Local).AddTicks(6887),
+                            Date = new DateTime(2024, 9, 25, 13, 58, 35, 676, DateTimeKind.Local).AddTicks(1119),
                             Description = "Snacks waren goed, maar had liever meer saus.",
                             Name = "Jane Smith",
                             Stars = 3.5m
@@ -419,13 +358,13 @@ namespace Fridayfrietday.Migrations
                         {
                             Id = 2,
                             Name = "Ketchup",
-                            Price = 0.5
+                            Price = 0.29999999999999999
                         },
                         new
                         {
                             Id = 3,
                             Name = "Curry",
-                            Price = 0.5
+                            Price = 0.40000000000000002
                         });
                 });
 

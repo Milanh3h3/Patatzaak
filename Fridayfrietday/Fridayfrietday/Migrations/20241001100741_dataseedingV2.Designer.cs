@@ -4,6 +4,7 @@ using Fridayfrietday;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fridayfrietday.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20241001100741_dataseedingV2")]
+    partial class dataseedingV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,19 +51,19 @@ namespace Fridayfrietday.Migrations
                         {
                             Id = 1,
                             Name = "Frieten",
-                            Picture = "Frietenmandje.png"
+                            Picture = "frieten.png"
                         },
                         new
                         {
                             Id = 2,
                             Name = "Snacks",
-                            Picture = "snackslogo.png"
+                            Picture = "snacks.png"
                         },
                         new
                         {
                             Id = 3,
                             Name = "Dranken",
-                            Picture = "DrinksLogo.png"
+                            Picture = "dranken.png"
                         });
                 });
 
@@ -253,7 +256,7 @@ namespace Fridayfrietday.Migrations
                             Id = 1,
                             AllowsSauces = true,
                             CategoryId = 1,
-                            ImageLink = "Frietenmandje.png",
+                            ImageLink = "friet_groot.png",
                             Name = "Friet Groot",
                             Price = 3.5
                         },
@@ -262,7 +265,7 @@ namespace Fridayfrietday.Migrations
                             Id = 2,
                             AllowsSauces = true,
                             CategoryId = 1,
-                            ImageLink = "Frietenmandje.png",
+                            ImageLink = "friet_medium.png",
                             Name = "Friet Medium",
                             Price = 3.0
                         },
@@ -271,7 +274,7 @@ namespace Fridayfrietday.Migrations
                             Id = 3,
                             AllowsSauces = true,
                             CategoryId = 1,
-                            ImageLink = "Frietenmandje.png",
+                            ImageLink = "friet_klein.png",
                             Name = "Friet Klein",
                             Price = 2.5
                         },
@@ -280,7 +283,7 @@ namespace Fridayfrietday.Migrations
                             Id = 4,
                             AllowsSauces = true,
                             CategoryId = 2,
-                            ImageLink = "Bitterballen.png",
+                            ImageLink = "bitterballen.png",
                             Name = "Bitterballen",
                             Price = 4.0
                         },
@@ -289,16 +292,16 @@ namespace Fridayfrietday.Migrations
                             Id = 5,
                             AllowsSauces = true,
                             CategoryId = 2,
-                            ImageLink = "frikandelspeciaal.png",
-                            Name = "FrikandelSpeciaal",
-                            Price = 2.5
+                            ImageLink = "frikandel.png",
+                            Name = "Frikandel",
+                            Price = 2.0
                         },
                         new
                         {
                             Id = 6,
                             AllowsSauces = true,
                             CategoryId = 2,
-                            ImageLink = "frikandelXXL.png",
+                            ImageLink = "frikandel_xxl.png",
                             Name = "Frikandel XXL",
                             Price = 5.0
                         },
@@ -307,7 +310,7 @@ namespace Fridayfrietday.Migrations
                             Id = 7,
                             AllowsSauces = false,
                             CategoryId = 3,
-                            ImageLink = "Cola.png",
+                            ImageLink = "cola.png",
                             Name = "Cola",
                             Price = 3.0
                         },
@@ -325,7 +328,7 @@ namespace Fridayfrietday.Migrations
                             Id = 9,
                             AllowsSauces = false,
                             CategoryId = 3,
-                            ImageLink = "ColaLight.png",
+                            ImageLink = "cola_light.png",
                             Name = "Cola Light",
                             Price = 3.0
                         },
@@ -334,7 +337,7 @@ namespace Fridayfrietday.Migrations
                             Id = 10,
                             AllowsSauces = false,
                             CategoryId = 3,
-                            ImageLink = "ColaZero.png",
+                            ImageLink = "cola_zero.png",
                             Name = "Cola Zero",
                             Price = 3.0
                         });
@@ -373,7 +376,7 @@ namespace Fridayfrietday.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2024, 9, 21, 14, 0, 58, 503, DateTimeKind.Local).AddTicks(6829),
+                            Date = new DateTime(2024, 9, 21, 12, 7, 40, 238, DateTimeKind.Local).AddTicks(3132),
                             Description = "Heerlijke frietjes!",
                             Name = "John Doe",
                             Stars = 4.5m
@@ -381,7 +384,7 @@ namespace Fridayfrietday.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2024, 9, 26, 14, 0, 58, 503, DateTimeKind.Local).AddTicks(6887),
+                            Date = new DateTime(2024, 9, 26, 12, 7, 40, 238, DateTimeKind.Local).AddTicks(3215),
                             Description = "Snacks waren goed, maar had liever meer saus.",
                             Name = "Jane Smith",
                             Stars = 3.5m
