@@ -4,6 +4,7 @@ using Fridayfrietday;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fridayfrietday.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20240930115837_dataseedingV1")]
+    partial class dataseedingV1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -79,7 +82,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
 
                     b.HasData(
                         new
@@ -112,7 +115,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
 
                     b.HasData(
                         new
@@ -152,7 +155,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
 
                     b.HasData(
                         new
@@ -198,7 +201,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasIndex("SauceId");
 
-                    b.ToTable("OrderDetailSauces", (string)null);
+                    b.ToTable("OrderDetailSauces");
 
                     b.HasData(
                         new
@@ -245,7 +248,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
@@ -303,7 +306,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Review", (string)null);
+                    b.ToTable("Review");
 
                     b.HasData(
                         new
@@ -342,7 +345,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sauces", (string)null);
+                    b.ToTable("Sauces");
 
                     b.HasData(
                         new

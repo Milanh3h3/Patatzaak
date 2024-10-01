@@ -14,6 +14,7 @@ namespace Fridayfrietday
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<OrderDetailSauce> OrderDetailSauces { get; set; }
+        public DbSet<Review> Review { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,7 +34,64 @@ namespace Fridayfrietday
                 .HasForeignKey(ods => ods.SauceId);
 
             base.OnModelCreating(modelBuilder);
+            // Category seeding
+            modelBuilder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "Frieten", Picture = "frieten.png" },
+                new Category { Id = 2, Name = "Snacks", Picture = "snacks.png" },
+                new Category { Id = 3, Name = "Dranken", Picture = "dranken.png" }
+            );
+
+            // Product seeding
+            modelBuilder.Entity<Product>().HasData(
+                new Product { Id = 1, Name = "Friet Groot", CategoryId = 1, Price = 3.5, AllowsSauces = true, ImageLink = "friet_groot.png" },  
+                new Product { Id = 2, Name = "Friet Medium", CategoryId = 1, Price = 3.0, AllowsSauces = true, ImageLink = "friet_medium.png" },  
+                new Product { Id = 3, Name = "Friet Klein", CategoryId = 1, Price = 2.5, AllowsSauces = true, ImageLink = "friet_klein.png" },
+                new Product { Id = 4, Name = "Bitterballen", CategoryId = 2, Price = 4.0, AllowsSauces = true, ImageLink = "bitterballen.png" },
+                new Product { Id = 5, Name = "Frikandel", CategoryId = 2, Price = 2.0, AllowsSauces = true, ImageLink = "frikandel.png" },
+                new Product { Id = 6, Name = "Frikandel XXL", CategoryId = 2, Price = 5.0, AllowsSauces = true, ImageLink = "frikandel_xxl.png" },
+                new Product { Id = 7, Name = "Cola", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "cola.png" },
+                new Product { Id = 8, Name = "Fanta", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "fanta.png" },
+                new Product { Id = 9, Name = "Cola Light", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "cola_light.png" },
+                new Product { Id = 10, Name = "Cola Zero", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "cola_zero.png" }
+            );
+
+            // Customer seeding
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer { Id = 1, Email = "customer1@example.com" },
+                new Customer { Id = 2, Email = "customer2@example.com" }
+            );
+
+            // Order seeding
+            modelBuilder.Entity<Order>().HasData(
+                new Order { Id = 1, TotalPrice = 11, CustomerId = 1 },
+                new Order { Id = 2, TotalPrice = 3.5, CustomerId = 2 }
+            );
+
+            // OrderDetail seeding
+            modelBuilder.Entity<OrderDetail>().HasData(
+                new OrderDetail { Id = 1, OrderId = 1, ProductId = 1, Quantity = 2 },
+                new OrderDetail { Id = 2, OrderId = 1, ProductId = 7, Quantity = 1 },
+                new OrderDetail { Id = 3, OrderId = 2, ProductId = 2, Quantity = 1 }
+            );
+
+            // Sauce seeding
+            modelBuilder.Entity<Sauce>().HasData(
+                new Sauce { Id = 1, Name = "Mayonaise", Price = 0.5 },
+                new Sauce { Id = 2, Name = "Ketchup", Price = 0.5 },
+                new Sauce { Id = 3, Name = "Curry", Price = 0.5 }
+            );
+
+            // OrderDetailSauce seeding
+            modelBuilder.Entity<OrderDetailSauce>().HasData(
+                new OrderDetailSauce { Id = 1, OrderDetailId = 1, SauceId = 1 },
+                new OrderDetailSauce { Id = 2, OrderDetailId = 1, SauceId = 2 }
+            );
+
+            // Review seeding
+            modelBuilder.Entity<Review>().HasData(
+                new Review { Id = 1, Name = "John Doe", Description = "Heerlijke frietjes!", Stars = 4.5m, Date = DateTime.Now.AddDays(-10) },
+                new Review { Id = 2, Name = "Jane Smith", Description = "Snacks waren goed, maar had liever meer saus.", Stars = 3.5m, Date = DateTime.Now.AddDays(-5) });
         }
-        public DbSet<Fridayfrietday.Models.Review> Review { get; set; } = default!;
+
     }
 }
