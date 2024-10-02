@@ -11,6 +11,6 @@ namespace Fridayfrietday.Models
         [MaxLength(300)]
         public string Description { get; set; }
         public decimal Stars { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
     }
 }

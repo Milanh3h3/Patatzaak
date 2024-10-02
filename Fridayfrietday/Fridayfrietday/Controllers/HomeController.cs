@@ -17,26 +17,17 @@ namespace Fridayfrietday.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-        // Create a ProductReviewViewModel instance
-        var viewModel = new ProductReviewViewModel
-        {
-            Products = _context.Products.Include(p => p.Category).ToList(),
-            Reviews = _context.Reviews.ToList()
-        };
+            // Create a ProductReviewViewModel instance
+            var viewModel = new ProductReviewViewModel
+            {
+                Products = _context.Products.Include(p => p.Category).ToList(),
+                Reviews = _context.Reviews.ToList()
+            };
 
-        // Pass the viewModel to the view
-        return View(viewModel);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-        public IActionResult Milan()
-        {
-            return View();
+            // Pass the viewModel to the view
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,15 +1,85 @@
-﻿<h1>Klantbeoordelingen</h1>
+﻿@model Fridayfrietday.ViewModels.ReviewViewModel
 
-<h2>Voeg een Review Toe</h2>
-<form asp-controller="Reviews" asp-action="Create" method="post">
-    <textarea name="review" placeholder="Schrijf hier je review..."></textarea>
-    <button type="submit">Versturen</button>
-</form>
 
-<h2>Recente Reviews</h2>
-<ul>
-    @foreach (var review in Model)
-    {
-        <li>@review.Text - @review.Date</li>
-    }
-</ul>
+<div class="container-fluid bg-light bg-icon py-6 mb-5">
+    <div class="container">
+        <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+            <h1 class="display-5 mb-3">Customer Reviews</h1>
+            <p>Bekijk wat onze klanten van ons vinden of voeg zelf iets toe</p>
+        </div>
+        <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
+            <!-- Start foreach loop for reviews -->
+            @foreach (var review in Model.Reviews)
+            {
+                <div class="testimonial-item position-relative bg-white p-5 mt-4">
+                    <!-- Stars based on Review.Stars -->
+                    <div class="mb-3">
+                        @for (int i = 0; i < Math.Floor((double)review.Stars); i++)
+                        {
+                            <i class="fa fa-star text-primary"></i>
+                        }
+                        @if (review.Stars % 1 != 0)
+                        {
+                            <i class="fa fa-star-half-alt text-primary"></i>
+                        }
+                    </div>
+                    <i class="fa fa-quote-left fa-3x text-primary position-absolute top-0 start-0 mt-n4 ms-5"></i>
+                    <p class="mb-4">@review.Description</p>
+                    <div class="d-flex align-items-center">
+                        <div class="ms-3">
+                            <h5 class="mb-1">@review.Name</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!-- End foreach loop -->
+        </div>
+
+
+        <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+            <h1 class="display-5 mb-3">Add your Review</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Index" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="NewReview.Name" class="control-label"></label>
+                        <input asp-for="NewReview.Name" class="form-control" />
+                        <span asp-validation-for="NewReview.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewReview.Description" class="control-label"></label>
+                        <textarea asp-for="NewReview.Description" class="form-control"></textarea>
+                        <span asp-validation-for="NewReview.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewReview.Stars" class="control-label"></label>
+                        <input asp-for="NewReview.Stars" type="number" min="1" max="5" class="form-control" />
+                        <span asp-validation-for="NewReview.Stars" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="lib/wow/wow.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/waypoints/waypoints.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="js/main.js"></script>
+
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
