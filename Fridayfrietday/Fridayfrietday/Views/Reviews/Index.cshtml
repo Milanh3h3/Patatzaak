@@ -36,9 +36,6 @@
         </div>
 
 
-        <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-            <h1 class="display-5 mb-3">Add your Review</h1>
-        </div>
         <div class="row">
             <div class="col-md-4">
                 <form asp-action="Index" method="post">
@@ -64,8 +61,11 @@
                 </form>
             </div>
         </div>
-
     </div>
+    @section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
 </div>
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -79,7 +79,3 @@
 <script src="js/main.js"></script>
 
 
-@section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-}

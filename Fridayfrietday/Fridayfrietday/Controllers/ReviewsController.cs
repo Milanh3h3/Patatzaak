@@ -21,33 +21,33 @@ namespace Fridayfrietday.Controllers
             _context = context;
         }
 
-        // GET: Display reviews and the form to add a new review
         public async Task<IActionResult> Index()
         {
-            var reviews = await _context.Reviews.ToListAsync(); // Load the reviews from the database
+            var reviews = await _context.Reviews.ToListAsync(); 
             var viewModel = new ReviewViewModel
             {
                 Reviews = reviews,
-                NewReview = new Review()  // Initialize a new Review for the form
+                NewReview = new Review()  
             };
-            return View(viewModel); // Pass the ViewModel to the view
+            return View(viewModel); 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(ReviewViewModel viewModel) // Use ReviewViewModel as parameter
+        public async Task<IActionResult> Index(ReviewViewModel viewModel)
         {
+            // Verwijder de 'Reviews' uit ModelState om validatie te laten werken want hij is stom
+            ModelState.Remove("Reviews");
             if (ModelState.IsValid)
             {
-                // Add the new review to the database
+                viewModel.NewReview.Date = DateTime.Now;
                 _context.Add(viewModel.NewReview);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            // If the model state is invalid, re-fetch the reviews and return the view model
-            viewModel.Reviews = await _context.Reviews.ToListAsync();
-            return View(viewModel); // Return the same ViewModel
+            viewModel.Reviews = _context.Reviews.ToList();
+            return View(viewModel);
         }
     }
 }
