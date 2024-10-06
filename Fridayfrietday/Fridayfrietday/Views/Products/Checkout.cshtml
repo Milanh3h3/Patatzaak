@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Checkout";
+}
+
+<h1>Checkout</h1>
+<p>Total Price: €@ViewBag.TotalPrice</p>
+
+<form asp-action="CheckoutConfirm" method="post">
+    <button type="submit" class="btn btn-primary">Confirm Order</button>
+</form>

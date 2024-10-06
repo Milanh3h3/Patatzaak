@@ -1,18 +1,142 @@
-﻿<h1>Ons Menu</h1>
-
-<div class="menu-container">
-    @foreach (var product in Model)
-    {
-        <div class="menu-item">
-            <img src="@product.Category.Picture" alt="@product.Name" />
-            <h3>@product.Name</h3>
-            <p>€@product.Price</p>
-            <form asp-controller="Orders" asp-action="AddToCart" method="post">
-                <input type="hidden" name="productId" value="@product.Id" />
-                <button type="submit">Toevoegen</button>
-            </form>
-        </div>
+﻿@model Fridayfrietday.ViewModels.ProductSauceViewModel;
+<style>
+    image {
+        background-image: url('~/Images/Header.png');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
     }
+</style>
+<!-- Page Header Start -->
+<div class="container-fluid image page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="display-3 mb-3 animated slideInDown">Bestellen</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a class="text-body" href="/Home">Home</a></li>
+                <li class="breadcrumb-item text-dark active" aria-current="page">Bestellen</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-0 gx-5 align-items-end">
+            <div class="col-lg-6">
+                <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                    <h1 class="display-5 mb-3">Our Products</h1>
+                    <p>Bekijk ons overheerlijk assortiment van snacks en verfrissende drankjes</p>
+                </div>
+            </div>
+            <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+                <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+                    <!-- Navigation item for each category -->
+                    @foreach (var category in Model.Products.Select(p => p.Category).Distinct())
+                    {
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-primary border-2" data-bs-toggle="pill" href="#tab-@category.Id">@category.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="tab-content">
+            @foreach (var category in Model.Products.Select(p => p.Category).Distinct())
+            {
+                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Products.Select(p => p.Category).FirstOrDefault()) {<text>show active</text>}">
+                    <div class="row g-4">
+                        @foreach (var product in Model.Products.Where(p => p.CategoryId == category.Id))
+                        {
+                            <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="product-item">
+                                    <div class="position-relative bg-light overflow-hidden">
+                                        <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
+                                    </div>
+                                    <div class="text-center p-4">
+                                        <a class="d-block h5 mb-2" href="#">@product.Name</a>
+                                        <span class="text-primary me-1">€ @product.Price.ToString("0.00")</span>
+                                    </div>
+                                    <div class="d-flex border-top">
+                                        <small class="w-50 text-center border-end py-2">
+                                            <a class="text-body customize-btn" href="#" data-product-id="@product.Id">
+                                                <i class="fa fa-eye text-primary me-2"></i> Customize
+                                            </a>
+
+
+                                        </small>
+                                        <small class="w-50 text-center py-2">
+                                            <form id="addToCartForm" method="post">
+                                                <input type="hidden" name="ProductId" value="@product.Id" />
+                                                <input type="hidden" name="SelectedSauceIds" id="selectedSauceIds" />
+                                                <input type="hidden" name="Quantity" value="1" />
+                                                <button type="button" class="btn btn-primary" onclick="addToCart(@product.Id)">
+                                                    <i class="fa fa-shopping-bag text-white me-2"></i> Add to cart
+                                                </button>
+                                            </form>
+
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Modal for Customizing Product -->
+<div class="modal fade" id="customiseModal" tabindex="-1" aria-labelledby="customiseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customiseModalLabel">Customize Your Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="customizeForm" method="post">
+                    <input type="hidden" name="ProductId" id="modalProductId" />
+                    <div class="mb-3">
+                        <label for="sauces" class="form-label">Select Sauces:</label>
+                        <div id="sauceOptions" class="form-check">
+                            @foreach (var sauce in Model.AvailableSauces) 
+                            {
+                                <div>
+                                    <input class="form-check-input" type="checkbox" name="SelectedSauces" value="@sauce.Id" id="sauce-@sauce.Id" />
+                                    <label class="form-check-label" for="sauce-@sauce.Id">@sauce.Name</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" id="quantity" name="Quantity" class="form-control" value="1" min="1" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="customizeAndAddToCart()">Add to Cart</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<a href="/Orders/Cart" class="button">Bekijk Bestelling</a>
+
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="lib/wow/wow.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/waypoints/waypoints.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="~/js/Product.js"></script>
+<!-- Template Javascript -->
+<script src="js/main.js"></script>

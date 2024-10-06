@@ -5,6 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DBContext>();
+builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache(); // Enable session storage
+builder.Services.AddSession(); // Add session middleware
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<ShoppingCartService>(); 
 
 var app = builder.Build();
 
@@ -20,6 +25,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 

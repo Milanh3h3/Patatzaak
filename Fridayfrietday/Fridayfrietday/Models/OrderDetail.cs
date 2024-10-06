@@ -15,7 +15,7 @@ namespace Fridayfrietday.Models
         public Product? Product { get; set; } // Navigation property for product
         [Required]
         public int Quantity { get; set; }
-        public List<OrderDetailSauce> SelectedSauces { get; set; } = [];
+        public List<OrderDetailSauce>? SelectedSauces { get; set; } = [];
 
     }
 }
