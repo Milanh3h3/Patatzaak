@@ -15,9 +15,8 @@ public class CartController : Controller
         _context = context;
     }
 
-    // Add product with selected sauces to cart
     [HttpPost]
-    public IActionResult AddToCart(int productId, List<int> selectedSauceIds, int quantity = 1)
+    public IActionResult AddToCart(int productId, string selectedSauces, int quantity = 1)
     {
         var product = _context.Products.FirstOrDefault(p => p.Id == productId);
         if (product == null)
@@ -25,14 +24,22 @@ public class CartController : Controller
             return NotFound();
         }
 
-        var sauces = _context.Sauces.Where(s => selectedSauceIds.Contains(s.Id)).ToList();
+        List<int>? sauceIds = new List<int>(); // Initialize an empty list for sauces
+
+        // Check if selectedSauces is not null or empty
+        if (!string.IsNullOrEmpty(selectedSauces))
+        {
+            // Deserialize the JSON string to a list of integers
+            sauceIds = selectedSauces.Select(id => Convert.ToInt32(id)).ToList();
+
+        }
 
         var orderDetail = new OrderDetail
         {
             ProductId = productId,
             Product = product,
             Quantity = quantity,
-            SelectedSauces = selectedSauceIds.Select(sauceId => new OrderDetailSauce
+            SelectedSauces = sauceIds.Select(sauceId => new OrderDetailSauce
             {
                 SauceId = sauceId
             }).ToList()
@@ -42,8 +49,9 @@ public class CartController : Controller
         cart.Add(orderDetail);
         SaveCartToSession(cart);
 
-        return RedirectToAction("Index", "Products");
+        return Json(new { success = true, message = "Product added to cart." });
     }
+
 
     // Retrieve cart from session
     private List<OrderDetail> GetCartFromSession()
