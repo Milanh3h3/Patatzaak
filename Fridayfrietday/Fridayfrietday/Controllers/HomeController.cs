@@ -23,11 +23,11 @@ namespace Fridayfrietday.Controllers
             var viewModel = new ProductReviewViewModel
             {
                 Products = _context.Products.Include(p => p.Category).ToList(),
-                Reviews = _context.Reviews.ToList()
+                Reviews = _context.Reviews.ToList(),
+                AvailableSauces = _context.Sauces.ToList()
             };
-
-            // Pass the viewModel to the view
             return View(viewModel);
+
         }
         public IActionResult Contact()
         {

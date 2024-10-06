@@ -45,7 +45,9 @@
         <div class="tab-content">
             @foreach (var category in Model.Products.Select(p => p.Category).Distinct())
             {
-                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Products.Select(p => p.Category).FirstOrDefault()) {<text>show active</text>}">
+                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Products.Select(p => p.Category).FirstOrDefault()) {
+            <text>show active</text>
+}">
                     <div class="row g-4">
                         @foreach (var product in Model.Products.Where(p => p.CategoryId == category.Id))
                         {
@@ -59,13 +61,14 @@
                                         <span class="text-primary me-1">€ @product.Price.ToString("0.00")</span>
                                     </div>
                                     <div class="d-flex border-top">
-                                        <small class="w-50 text-center border-end py-2">
-                                            <a class="text-body customize-btn" href="#" data-product-id="@product.Id">
-                                                <i class="fa fa-eye text-primary me-2"></i> Customize
-                                            </a>
-
-
-                                        </small>
+                                        @if (product.AllowsSauces)
+                                        {
+                                            <small class="w-50 text-center border-end py-2">
+                                                <a class="text-body customize-btn" href="#" data-product-id="@product.Id">
+                                                    <i class="fa fa-eye text-primary me-2"></i> Customize
+                                                </a>
+                                            </small>
+                                        }
                                         <small class="w-50 text-center py-2">
                                             <form id="addToCartForm" method="post">
                                                 <input type="hidden" name="ProductId" value="@product.Id" />
@@ -75,12 +78,8 @@
                                                     <i class="fa fa-shopping-bag text-white me-2"></i> Add to cart
                                                 </button>
                                             </form>
-
-
                                         </small>
-
                                     </div>
-
                                 </div>
                             </div>
                         }
@@ -90,6 +89,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal for Customizing Product -->
 <div class="modal fade" id="customiseModal" tabindex="-1" aria-labelledby="customiseModalLabel" aria-hidden="true">
     <div class="modal-dialog">
