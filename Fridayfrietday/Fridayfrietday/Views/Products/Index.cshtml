@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Fridayfrietday.Models.Product>;
+﻿@model Fridayfrietday.ViewModels.ProductSauceViewModel;
 <style>
     image {
         background-image: url('~/Images/Header.png');
@@ -10,11 +10,11 @@
 <!-- Page Header Start -->
 <div class="container-fluid image page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
     <div class="container">
-        <h1 class="display-3 mb-3 animated slideInDown">Products</h1>
+        <h1 class="display-3 mb-3 animated slideInDown">Bestellen</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a class="text-body" href="/Home">Home</a></li>
-                <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
+                <li class="breadcrumb-item text-dark active" aria-current="page">Bestellen</li>
             </ol>
         </nav>
     </div>
@@ -33,7 +33,7 @@
             <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
                 <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
                     <!-- Navigation item for each category -->
-                    @foreach (var category in Model.Select(p => p.Category).Distinct())
+                    @foreach (var category in Model.Products.Select(p => p.Category).Distinct())
                     {
                         <li class="nav-item me-2">
                             <a class="btn btn-outline-primary border-2" data-bs-toggle="pill" href="#tab-@category.Id">@category.Name</a>
@@ -43,11 +43,11 @@
             </div>
         </div>
         <div class="tab-content">
-            @foreach (var category in Model.Select(p => p.Category).Distinct())
+            @foreach (var category in Model.Products.Select(p => p.Category).Distinct())
             {
-                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Select(p => p.Category).FirstOrDefault()) {<text>show active</text>}">
+                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Products.Select(p => p.Category).FirstOrDefault()) {<text>show active</text>}">
                     <div class="row g-4">
-                        @foreach (var product in Model.Where(p => p.CategoryId == category.Id))
+                        @foreach (var product in Model.Products.Where(p => p.CategoryId == category.Id))
                         {
                             <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="product-item">
@@ -60,12 +60,25 @@
                                     </div>
                                     <div class="d-flex border-top">
                                         <small class="w-50 text-center border-end py-2">
-                                            <a class="text-body" href="#"><i class="fa fa-eye text-primary me-2"></i> No allergies</a>
+                                            <!-- Customise Button -->
+                                            <a class="text-body" href="@Url.Action("CustomizeProduct", "ProductsController", new { productId = product.Id })">
+                                                <i class="fa fa-eye text-primary me-2"></i> Customize
+                                            </a>
                                         </small>
                                         <small class="w-50 text-center py-2">
-                                            <a class="text-body" href="#"><i class="fa fa-shopping-bag text-primary me-2"></i>Add to cart</a>
+                                            <form asp-action="AddToCart" asp-controller="Cart" method="post">
+                                                <input type="hidden" name="ProductId" value="@product.Id" />
+                                                <input type="hidden" name="SelectedSauceIds" id="selectedSauceIds" />
+                                                <input type="hidden" name="Quantity" value="1" />
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-shopping-bag text-white me-2"></i> Add to cart
+                                                </button>
+                                            </form>
+
                                         </small>
+
                                     </div>
+
                                 </div>
                             </div>
                         }
@@ -75,7 +88,56 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="customiseModal" tabindex="-1" aria-labelledby="customiseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customiseModalLabel">Customize Your Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="customizeForm" asp-action="AddToCart" method="post">
+                    <input type="hidden" name="ProductId" id="modalProductId" />
+                    <div class="mb-3">
+                        <label for="sauces" class="form-label">Select Sauces:</label>
+                        <select id="sauces" name="SelectedSauces" class="form-control" multiple>
+                            @foreach (var sauce in Model.AvailableSauces) 
+                            {
+                                <option value="@sauce.Id">@sauce.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" id="quantity" name="Quantity" class="form-control" value="1" min="1" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="customizeForm" class="btn btn-primary">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add click event to Customize buttons
+        const customizeButtons = document.querySelectorAll('.customize-btn');
+        customizeButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                const productId = button.getAttribute('data-product-id');
+                document.getElementById('modalProductId').value = productId;
+
+                // Show the customize modal
+                var customiseModal = new bootstrap.Modal(document.getElementById('customiseModal'));
+                customiseModal.show();
+            });
+        });
+    });
+</script>
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>

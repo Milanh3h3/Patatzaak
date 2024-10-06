@@ -1,0 +1,21 @@
+﻿@model Fridayfrietday.ViewModels.ProductSauceViewModel
+
+<div class="container">
+    <h1>Customize @Model.SelectedProduct.Name</h1>
+    <form asp-action="AddToCart" method="post">
+        <input type="hidden" asp-for="SelectedProduct.Id" />
+
+        <div>
+            <h3>Select Sauces:</h3>
+            @foreach (var sauce in Model.AvailableSauces)
+            {
+                <div>
+                    <input type="checkbox" asp-for="SelectedSauceIds" value="@sauce.Id" />
+                    <label>@sauce.Name (€ @sauce.Price.ToString("0.00"))</label>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+    </form>
+</div>

@@ -29,6 +29,10 @@ namespace Fridayfrietday.Controllers
             // Pass the viewModel to the view
             return View(viewModel);
         }
+        public IActionResult Contact()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

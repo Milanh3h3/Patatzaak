@@ -8,23 +8,36 @@ using Microsoft.EntityFrameworkCore;
 using Fridayfrietday;
 using Fridayfrietday.Models;
 using Microsoft.AspNetCore.Authorization;
+using Fridayfrietday.ViewModels;
 
 namespace Fridayfrietday.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly DBContext _context;
+        private readonly ShoppingCartService _shoppingCartService;
 
-        public ProductsController(DBContext context)
+        public ProductsController(DBContext context, ShoppingCartService shoppingCartService)
         {
             _context = context;
+            _shoppingCartService = shoppingCartService;
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var dBContext = _context.Products.Include(p => p.Category);
-            return View(await dBContext.ToListAsync());
+            // Load products and sauces from the database
+            var products = _context.Products.Include(p => p.Category).ToList();
+            var sauces = _context.Sauces.ToList();
+
+            // Create the view model with products and available sauces
+            var viewModel = new ProductSauceViewModel
+            {
+                Products = products,
+                AvailableSauces = sauces
+            };
+
+            return View(viewModel);
         }
 
         // GET: Products/Details/5

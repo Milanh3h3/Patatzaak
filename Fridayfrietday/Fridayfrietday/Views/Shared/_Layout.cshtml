@@ -1,6 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-
+﻿
 
 <head>
     <meta charset="utf-8">
@@ -32,8 +30,6 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-
-<body>
     <!-- Navbar Start -->
 <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
     <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
@@ -60,10 +56,9 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="/Home" class="nav-item nav-link">Home</a>
-                <a href="about.html" class="nav-item nav-link">About Us</a>
-                <a href="/Products" class="nav-item nav-link">Products</a>
+                <a href="/Products" class="nav-item nav-link">Bestellen</a>
                 <a href="/Reviews" class="nav-item nav-link">Reviews</a>
-                <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+                <a href="/Home/Contact" class="nav-item nav-link">Contact Us</a>
             </div>
             <div class="d-none d-lg-flex ms-2">
                 <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
@@ -155,5 +150,4 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+
