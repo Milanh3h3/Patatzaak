@@ -45,9 +45,7 @@
         <div class="tab-content">
             @foreach (var category in Model.Products.Select(p => p.Category).Distinct())
             {
-                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Products.Select(p => p.Category).FirstOrDefault()) {
-            <text>show active</text>
-}">
+                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Products.Select(p => p.Category).FirstOrDefault()) {<text>show active</text>}">
                     <div class="row g-4">
                         @foreach (var product in Model.Products.Where(p => p.CategoryId == category.Id))
                         {
@@ -88,6 +86,10 @@
             }
         </div>
     </div>
+</div>
+
+<div class="text-md-end  wow fadeIn" data-wow-delay="0.5s">
+    <a class="btn btn-lg btn-secondary rounded-pill py-3 px-5" href="Cart/ViewCart">Afrekenen</a>
 </div>
 
 <!-- Modal for Customizing Product -->
