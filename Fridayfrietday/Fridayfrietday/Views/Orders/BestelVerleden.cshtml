@@ -1,12 +1,89 @@
-﻿
-<h1>Jouw Bestelgeschiedenis</h1>
+﻿@model Fridayfrietday.ViewModels.BestelverledenViewModel
 
-<ul>
-    @foreach (var order in Model)
-    {
-        <li>
-            Bestelling op @order.Date - Totaal: €@order.TotalPrice
-            <a href="/Orders/Reorder?orderId=@order.Id" class="button">Bestel Opnieuw</a>
-        </li>
-    }
-</ul>
+<!-- Page Header Start -->
+<div class="container-fluid image page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container text-center">
+        <h1 class="display-3 mb-3 animated slideInDown">Uw Bestellingen</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a class="text-body" href="/Home">Home</a></li>
+                <li class="breadcrumb-item text-dark active" aria-current="page">Bestelverleden</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Email Input Form -->
+<div class="container mb-4">
+    <form asp-action="Bestelverleden" method="get" class="form-inline justify-content-center">
+        <div class="form-group mx-2">
+            <label for="email" class="mr-2">Enter your email to view your orders:</label>
+            <input type="email" id="email" name="email" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Load Orders</button>
+    </form>
+</div>
+
+@if (Model.Orders.Any())
+{
+    <div class="container">
+        <h3>Orders for @Model.Email</h3>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Total Price</th>
+                    <th>Afhaalnummer</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Orders)
+                {
+                    <tr>
+                        <td>@order.OrderDate?.ToString("g")</td>
+                        <td>@order.TotalPrice</td>
+                        <td>@order.PickupNumber</td>
+                        <td>
+                            <button class="btn btn-info toggle-details" data-order-id="@order.Id">View Items</button>
+                            <div class="order-details" id="details-@order.Id" style="display:none;">
+                                <ul class="list-group mt-2">
+                                    @foreach (var detail in Model.OrderDetails)
+                                    {
+                                        <li class="list-group-item">
+                                            @detail.Product?.Name - Quantity: @detail.Quantity
+                                            <ul class="list-group">
+                                                @foreach (var sauce in Model.OrderDetailSauces)
+                                                {
+                                                    <li class="list-group-item">@sauce.Sauce?.Name</li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else if (Model.Email != string.Empty)
+{
+    <div class="container">
+        <p class="text-danger text-center">No orders found for this email.</p>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.toggle-details').click(function () {
+                var orderId = $(this).data('order-id');
+                $('#details-' + orderId).toggle();
+            });
+        });
+    </script>
+}

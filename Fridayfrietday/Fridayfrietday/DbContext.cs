@@ -67,8 +67,8 @@ namespace Fridayfrietday
 
             // Order seeding
             modelBuilder.Entity<Order>().HasData(
-                new Order { Id = 1, TotalPrice = 11.0, CustomerId = 1 },
-                new Order { Id = 2, TotalPrice = 3.5, CustomerId = 2 }
+                new Order { Id = 1, TotalPrice = 11.0, CustomerId = 1, OrderDate = DateTime.Now, PickupNumber = 1 },
+                new Order { Id = 2, TotalPrice = 3.5, CustomerId = 2, OrderDate = DateTime.Now, PickupNumber = 2 }
             );
 
             // OrderDetail seeding

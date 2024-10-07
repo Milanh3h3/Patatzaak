@@ -35,41 +35,39 @@ public class CartController : Controller
     [HttpPost]
     public IActionResult AddToCart(int productId, string selectedSauces, int quantity = 1)
     {
-        var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+        var product = _context.Products.AsNoTracking().FirstOrDefault(p => p.Id == productId);
         if (product == null)
         {
             return NotFound();
         }
 
-        List<OrderDetailSauce> orderDetailSauces = new List<OrderDetailSauce>(); // Initialize an empty list for sauces
+        List<OrderDetailSauce> orderDetailSauces = new List<OrderDetailSauce>();
 
-        // Check if selectedSauces is not null or empty
         if (!string.IsNullOrEmpty(selectedSauces))
         {
-            // Deserialize the JSON string to a list of integers
             List<int> sauceIds = JsonConvert.DeserializeObject<List<int>>(selectedSauces);
 
-            // Create OrderDetailSauce objects
             orderDetailSauces = sauceIds.Select(sauceId => new OrderDetailSauce
             {
-                SauceId = sauceId // Store the SauceId
+                SauceId = sauceId
             }).ToList();
         }
 
         var orderDetail = new OrderDetail
         {
             ProductId = productId,
-            Product = product,
+            Product = product, // Using AsNoTracking() above prevents EF from thinking this is a new Product.
             Quantity = quantity,
-            SelectedSauces = orderDetailSauces // Store OrderDetailSauces directly
+            SelectedSauces = orderDetailSauces
         };
 
         var cart = GetCartFromSession();
         cart.Add(orderDetail);
-        SaveCartToSession(cart); // Save the entire cart including sauces
+        SaveCartToSession(cart);
 
         return Json(new { success = true, message = "Product added to cart." });
     }
+
 
 
 
@@ -102,22 +100,68 @@ public class CartController : Controller
         return View(cart);
     }
 
-    public IActionResult ConfirmOrder()
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult ConfirmOrder(string email)
     {
         var cart = GetCartFromSession();
+
+        if (cart == null || !cart.Any())
+        {
+            TempData["ErrorMessage"] = "No items in the cart to confirm.";
+            return RedirectToAction("Cart");
+        }
+
+        // Find or create customer based on email
+        var customer = _context.Customers.FirstOrDefault(c => c.Email == email);
+        if (customer == null)
+        {
+            customer = new Customer { Email = email }; // Create new customer
+            _context.Customers.Add(customer);
+            _context.SaveChanges(); // Save to get the ID
+        }
+
+        // Create a new order and initialize OrderDetails
         var newOrder = new Order
         {
-            TotalPrice = cart.Sum(od => od.Product.Price * od.Quantity + od.SelectedSauces.Sum(s => s.Sauce.Price)),
-            CustomerId = 1, // Set based on the logged-in customer
-            OrderDetails = cart
+            TotalPrice = cart.Sum(od => od.Product.Price * od.Quantity) + cart.Sum(od => od.SelectedSauces.Sum(s => s.Sauce?.Price ?? 0)),
+            CustomerId = customer.Id,
+            OrderDate = DateTime.Now,
+            OrderDetails = new List<OrderDetail>() // Initialize the OrderDetails collection
         };
 
+        // Prepare order details without attaching existing products
+        foreach (var orderDetail in cart)
+        {
+            // Retrieve the existing product by its ID
+            var existingProduct = _context.Products.Find(orderDetail.ProductId);
+            if (existingProduct != null)
+            {
+                // Create a new OrderDetail with just the ProductId
+                var newOrderDetail = new OrderDetail
+                {
+                    ProductId = existingProduct.Id, // Use existing product ID
+                    Quantity = orderDetail.Quantity,
+                    SelectedSauces = orderDetail.SelectedSauces // Keep the selected sauces
+                };
+                newOrder.OrderDetails.Add(newOrderDetail); // This should now work
+            }
+        }
+
+        // Add and save the order
         _context.Orders.Add(newOrder);
-        _context.SaveChanges();
+        _context.SaveChanges(); // This should work without errors now
 
-        // Clear cart after saving
-        SaveCartToSession(new List<OrderDetail>());
+        var today = DateTime.Today;
+        var orderCount = _context.Orders.Count(o => o.OrderDate.HasValue && o.OrderDate.Value.Date == today);
+        newOrder.PickupNumber = int.Parse($"{today:yyMMdd}{orderCount.ToString().PadLeft(3, '0')}");
+        _context.SaveChanges(); // Save pickup number
 
-        return RedirectToAction("OrderConfirmation");
+        SaveCartToSession(new List<OrderDetail>()); // Clear cart after saving
+
+        TempData["SuccessMessage"] = $"Your order has been placed! Your pickup number is: {newOrder.PickupNumber}";
+
+        return RedirectToAction("Bestelverleden", "Orders");
     }
+
 }

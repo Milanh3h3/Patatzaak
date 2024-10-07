@@ -13,6 +13,9 @@ namespace Fridayfrietday.Models
         public int CustomerId { get; set; }
         public Customer? Customer { get; set; } // Navigation property for customer
         public List<OrderDetail>? OrderDetails { get; set; } // List of order details (multiple products)
+        public DateTime? OrderDate { get; set; } = DateTime.Now;
+
+        public int PickupNumber;
 
     }
 }

@@ -117,11 +117,11 @@
                                             </small>
                                         }
                                         <small class="w-50 text-center py-2">
-                                            <form id="addToCartForm" method="post">
+                                            <form method="post">
                                                 <input type="hidden" name="ProductId" value="@product.Id" />
-                                                <input type="hidden" name="SelectedSauceIds" id="selectedSauceIds" />
+                                                <input type="hidden" name="SelectedSauceIds" id="selectedSauceIds-@product.Id" />
                                                 <input type="hidden" name="Quantity" value="1" />
-                                                <button type="button" class="btn btn-primary" onclick="addToCart(@product.Id)">
+                                                <button type="button" class="btn btn-primary add-to-cart-btn" data-product-id="@product.Id">
                                                     <i class="fa fa-shopping-bag text-white me-2"></i> Add to cart
                                                 </button>
                                             </form>
@@ -137,6 +137,9 @@
     </div>
 </div>
 
+<div class="text-md-end  wow fadeIn" data-wow-delay="0.5s">
+    <a class="btn btn-lg btn-secondary rounded-pill py-3 px-5" href="Cart/ViewCart">Afrekenen</a>
+</div>
     <!-- Product End -->
     <!-- Firm Visit Start -->
     <div class="container-fluid bg-primary bg-icon mt-5 py-6">

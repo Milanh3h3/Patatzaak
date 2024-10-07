@@ -57,31 +57,45 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-function addToCart(productId) {
-    const formData = new FormData(document.getElementById('addToCartForm'));
-    formData.append('productId', productId); // Add the product ID to the form data
+document.addEventListener('DOMContentLoaded', function () {
+    // Add click event to each 'Add to Cart' button
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const productId = button.getAttribute('data-product-id');
+            const form = button.closest('form'); // Find the closest form element related to this button
 
-    fetch('/Cart/AddToCart', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest' // Indicates that this is an AJAX request
-        }
-    })
-        .then(response => {
-            if (response.ok) {
-                return response.json(); // Expect a JSON response from the server
+            if (!form) {
+                console.error('Form not found for product ID:', productId);
+                return;
             }
-            throw new Error('Network response was not ok.');
-        })
-        .then(data => {
-            // Handle success response here
-            alert('Product added to cart successfully!');
-            console.log(data); // You can log the response data for debugging
-        })
-        .catch(error => {
-            // Handle error response here
-            alert('There was an error adding the product to the cart.');
-            console.error('Error:', error);
+
+            const formData = new FormData(form);
+
+            fetch('/Cart/AddToCart', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(data => {
+                    // Handle success response here
+                    alert('Product added to cart successfully!');
+                    console.log(data);
+                })
+                .catch(error => {
+                    // Handle error response here
+                    alert('There was an error adding the product to the cart.');
+                    console.error('Error:', error);
+                });
         });
-}
+    });
+});
+

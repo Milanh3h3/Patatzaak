@@ -68,11 +68,11 @@
                                             </small>
                                         }
                                         <small class="w-50 text-center py-2">
-                                            <form id="addToCartForm" method="post">
+                                            <form method="post">
                                                 <input type="hidden" name="ProductId" value="@product.Id" />
-                                                <input type="hidden" name="SelectedSauceIds" id="selectedSauceIds" />
+                                                <input type="hidden" name="SelectedSauceIds" id="selectedSauceIds-@product.Id" />
                                                 <input type="hidden" name="Quantity" value="1" />
-                                                <button type="button" class="btn btn-primary" onclick="addToCart(@product.Id)">
+                                                <button type="button" class="btn btn-primary add-to-cart-btn" data-product-id="@product.Id">
                                                     <i class="fa fa-shopping-bag text-white me-2"></i> Add to cart
                                                 </button>
                                             </form>
