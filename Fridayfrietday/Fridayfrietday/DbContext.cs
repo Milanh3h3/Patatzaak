@@ -40,9 +40,9 @@ namespace Fridayfrietday
 
             // Category seeding
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Frieten", Picture = "Frietenmandje.png" },
-                new Category { Id = 2, Name = "Snacks", Picture = "snackslogo.png" },
-                new Category { Id = 3, Name = "Dranken", Picture = "DrinksLogo.png" }
+                new Category { Id = 1, Name = "Frieten"},
+                new Category { Id = 2, Name = "Snacks"},
+                new Category { Id = 3, Name = "Dranken"}
             );
 
             // Product seeding
