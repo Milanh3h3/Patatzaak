@@ -106,11 +106,13 @@
                     <div class="mb-3">
                         <label for="sauces" class="form-label">Select Sauces:</label>
                         <div id="sauceOptions" class="form-check">
-                            @foreach (var sauce in Model.AvailableSauces) 
+                            @foreach (var sauce in Model.AvailableSauces)
                             {
                                 <div>
                                     <input class="form-check-input" type="checkbox" name="SelectedSauces" value="@sauce.Id" id="sauce-@sauce.Id" />
-                                    <label class="form-check-label" for="sauce-@sauce.Id">@sauce.Name</label>
+                                    <label class="form-check-label" for="sauce-@sauce.Id">
+                                        @sauce.Name - &euro;@sauce.Price
+                                    </label>
                                 </div>
                             }
                         </div>
@@ -128,6 +130,7 @@
         </div>
     </div>
 </div>
+
 
 
 

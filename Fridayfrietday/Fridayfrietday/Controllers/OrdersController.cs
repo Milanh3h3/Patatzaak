@@ -32,17 +32,18 @@ namespace Fridayfrietday.Controllers
 
                 if (customer != null)
                 {
-                    // Add orders to the view model
-                    viewModel.Orders = _context.Orders.Where(o => o.CustomerId == customer.Id).OrderBy(o => o.OrderDate).ToList();
-                    foreach(Order order in viewModel.Orders)
-                    {
-                        viewModel.OrderDetails = _context.OrderDetails.Where(o => o.OrderId == order.Id).Include(p => p.Product).ToList();
-                        foreach(OrderDetail orderd in viewModel.OrderDetails)
-                        {
-                            viewModel.OrderDetailSauces = _context.OrderDetailSauces.Where(o => o.OrderDetailId == orderd.Id).Include(p => p.Sauce).ToList();
-                        }
-                    }
+                    // Haal de orders van de klant op, inclusief de benodigde navigatie-eigenschappen
+                    viewModel.Orders = _context.Orders
+                        .Where(o => o.CustomerId == customer.Id)
+                        .OrderByDescending(o => o.OrderDate) // Sorteer de orders aflopend op OrderDate
+                        .Include(o => o.OrderDetails) // Include order details for each order
+                        .ThenInclude(od => od.Product) // Include the product for each order detail
+                        .Include(o => o.OrderDetails)
+                        .ThenInclude(od => od.SelectedSauces) // Include selected sauces for each order detail
+                        .ThenInclude(ods => ods.Sauce) // Include the sauce details
+                        .ToList();
                 }
+
             }
 
             return View(viewModel);

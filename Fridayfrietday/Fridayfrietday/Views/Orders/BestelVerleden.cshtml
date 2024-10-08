@@ -48,12 +48,12 @@
                             <button class="btn btn-info toggle-details" data-order-id="@order.Id">View Items</button>
                             <div class="order-details" id="details-@order.Id" style="display:none;">
                                 <ul class="list-group mt-2">
-                                    @foreach (var detail in Model.OrderDetails)
+                                    @foreach (var detail in order.OrderDetails)
                                     {
                                         <li class="list-group-item">
                                             @detail.Product?.Name - Quantity: @detail.Quantity
                                             <ul class="list-group">
-                                                @foreach (var sauce in Model.OrderDetailSauces)
+                                                @foreach (var sauce in detail.SelectedSauces)
                                                 {
                                                     <li class="list-group-item">@sauce.Sauce?.Name</li>
                                                 }

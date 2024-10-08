@@ -69,9 +69,6 @@ public class CartController : Controller
     }
 
 
-
-
-
     // Retrieve cart from session
     private List<OrderDetail> GetCartFromSession()
     {
@@ -121,10 +118,28 @@ public class CartController : Controller
             _context.SaveChanges(); // Save to get the ID
         }
 
+        // get totalprice
+        double totalprice = 0;
+        foreach (OrderDetail detail in cart) 
+        {
+            double totalsauceprice = 0;
+            foreach (OrderDetailSauce? ods in detail.SelectedSauces) 
+            {
+                ods.Sauce =_context.Sauces.FirstOrDefault(c => c.Id == ods.SauceId);
+                if (ods.Sauce != null)
+                {
+                    totalsauceprice += ods.Sauce.Price;
+                }
+
+            } 
+            totalprice += (totalsauceprice + detail.Product.Price) * detail.Quantity;
+        }
+
+
         // Create a new order and initialize OrderDetails
         var newOrder = new Order
         {
-            TotalPrice = cart.Sum(od => od.Product.Price * od.Quantity) + cart.Sum(od => od.SelectedSauces.Sum(s => s.Sauce?.Price ?? 0)),
+            TotalPrice = totalprice,
             CustomerId = customer.Id,
             OrderDate = DateTime.Now,
             OrderDetails = new List<OrderDetail>() // Initialize the OrderDetails collection
@@ -159,9 +174,9 @@ public class CartController : Controller
 
         SaveCartToSession(new List<OrderDetail>()); // Clear cart after saving
 
-        TempData["SuccessMessage"] = $"Your order has been placed! Your pickup number is: {newOrder.PickupNumber}";
 
-        return RedirectToAction("Bestelverleden", "Orders");
+        return RedirectToAction("Bestelverleden", "Orders", new { email });
+
     }
 
 }

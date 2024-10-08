@@ -15,7 +15,7 @@ namespace Fridayfrietday.Models
         public List<OrderDetail>? OrderDetails { get; set; } // List of order details (multiple products)
         public DateTime? OrderDate { get; set; } = DateTime.Now;
 
-        public int PickupNumber;
+        public int PickupNumber { get; set; }
 
     }
 }
