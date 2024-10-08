@@ -34,6 +34,7 @@
                     <th>Date</th>
                     <th>Total Price</th>
                     <th>Afhaalnummer</th>
+                    <th>Status</th>
                     <th>Details</th>
                 </tr>
             </thead>
@@ -44,6 +45,7 @@
                         <td>@order.OrderDate?.ToString("g")</td>
                         <td>@order.TotalPrice</td>
                         <td>@order.PickupNumber</td>
+                        <td>@order.OrderStatus</td>
                         <td>
                             <button class="btn btn-info toggle-details" data-order-id="@order.Id">View Items</button>
 

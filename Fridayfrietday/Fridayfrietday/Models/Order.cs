@@ -16,6 +16,8 @@ namespace Fridayfrietday.Models
         public DateTime? OrderDate { get; set; } = DateTime.Now;
 
         public int PickupNumber { get; set; }
+        [Required]
+        public string? OrderStatus { get; set; }
 
     }
 }

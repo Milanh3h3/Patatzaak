@@ -141,6 +141,7 @@ public class CartController : Controller
             TotalPrice = totalprice,
             CustomerId = customer.Id,
             OrderDate = DateTime.Now,
+            OrderStatus = "Bestelling aangekomen",
             OrderDetails = new List<OrderDetail>() // Initialize the OrderDetails collection
         };
 
