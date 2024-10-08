@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Fridayfrietday;
 using Fridayfrietday.Models;
 using Fridayfrietday.ViewModels;
+using Fridayfrietday.Controllers;
+using Newtonsoft.Json;
+using Microsoft.CodeAnalysis;
 
 namespace Fridayfrietday.Controllers
 {
@@ -47,6 +50,64 @@ namespace Fridayfrietday.Controllers
             }
 
             return View(viewModel);
+        }
+        [HttpPost]
+        public IActionResult Reorder(int orderId)
+        {
+            // Find the order and its details
+            var order = _context.Orders
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.SelectedSauces)
+                .FirstOrDefault(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                TempData["ErrorMessage"] = "Order not found.";
+                return RedirectToAction("Bestelverleden");
+            }
+
+            List<OrderDetail> cart = GetCartFromSession();
+
+            // Add each OrderDetail from the old order to the cart
+            foreach (var orderDetail in order.OrderDetails)
+            {
+                var cartItem = new OrderDetail
+                {
+                    ProductId = orderDetail.ProductId,
+                    Product = _context.Products.AsNoTracking().FirstOrDefault(p => p.Id == orderDetail.ProductId), // read cartcontroller
+                    Quantity = orderDetail.Quantity,
+                    SelectedSauces = orderDetail.SelectedSauces.Select(s => new OrderDetailSauce
+                    {
+                        SauceId = s.SauceId
+                    }).ToList()
+                };
+
+                cart.Add(cartItem);
+            }
+
+            SaveCartToSession(cart);
+
+            // Redirect to the View Cart page
+            return RedirectToAction("ViewCart", "Cart");
+        }
+        // Retrieve cart from session
+        private List<OrderDetail> GetCartFromSession()
+        {
+            var cartJson = HttpContext.Session.GetString("Cart");
+            if (string.IsNullOrEmpty(cartJson))
+            {
+                return new List<OrderDetail>();
+            }
+
+            // Deserialize the cart and include OrderDetailSauces
+            return JsonConvert.DeserializeObject<List<OrderDetail>>(cartJson);
+        }
+
+        // Save cart to session
+        private void SaveCartToSession(List<OrderDetail> cart)
+        {
+            var cartJson = JsonConvert.SerializeObject(cart);
+            HttpContext.Session.SetString("Cart", cartJson);
         }
     }
 }

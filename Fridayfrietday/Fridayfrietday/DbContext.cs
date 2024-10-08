@@ -51,7 +51,7 @@ namespace Fridayfrietday
                 new Product { Id = 2, Name = "Friet Medium", CategoryId = 1, Price = 3.0, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
                 new Product { Id = 3, Name = "Friet Klein", CategoryId = 1, Price = 2.5, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
                 new Product { Id = 4, Name = "Bitterballen", CategoryId = 2, Price = 4.0, AllowsSauces = true, ImageLink = "Bitterballen.png" },
-                new Product { Id = 5, Name = "FrikandelSpeciaal", CategoryId = 2, Price = 2.5, AllowsSauces = true, ImageLink = "frikandelspeciaal.png" },
+                new Product { Id = 5, Name = "Frikandel Speciaal", CategoryId = 2, Price = 2.5, AllowsSauces = true, ImageLink = "frikandelspeciaal.png" },
                 new Product { Id = 6, Name = "Frikandel XXL", CategoryId = 2, Price = 5.0, AllowsSauces = true, ImageLink = "frikandelXXL.png" },
                 new Product { Id = 7, Name = "Cola", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "Cola.png" },
                 new Product { Id = 8, Name = "Fanta", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "fanta.png" },

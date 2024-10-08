@@ -35,7 +35,7 @@ public class CartController : Controller
     [HttpPost]
     public IActionResult AddToCart(int productId, string selectedSauces, int quantity = 1)
     {
-        var product = _context.Products.AsNoTracking().FirstOrDefault(p => p.Id == productId);
+        var product = _context.Products.AsNoTracking().FirstOrDefault(p => p.Id == productId); // read below
         if (product == null)
         {
             return NotFound();
@@ -70,9 +70,9 @@ public class CartController : Controller
 
 
     // Retrieve cart from session
-    private List<OrderDetail> GetCartFromSession()
+    public List<OrderDetail> GetCartFromSession()
     {
-        var cartJson = HttpContext.Session.GetString("Cart");
+        var cartJson = HttpContext.Session.GetString("Cart"); 
         if (string.IsNullOrEmpty(cartJson))
         {
             return new List<OrderDetail>();
@@ -84,7 +84,7 @@ public class CartController : Controller
 
 
     // Save cart to session
-    private void SaveCartToSession(List<OrderDetail> cart)
+    public void SaveCartToSession(List<OrderDetail> cart)
     {
         var cartJson = JsonConvert.SerializeObject(cart);
         HttpContext.Session.SetString("Cart", cartJson);
@@ -105,8 +105,7 @@ public class CartController : Controller
 
         if (cart == null || !cart.Any())
         {
-            TempData["ErrorMessage"] = "No items in the cart to confirm.";
-            return RedirectToAction("Cart");
+            return RedirectToAction("ViewCart");
         }
 
         // Find or create customer based on email
