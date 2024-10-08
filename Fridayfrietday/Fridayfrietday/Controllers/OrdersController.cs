@@ -11,6 +11,7 @@ using Fridayfrietday.ViewModels;
 using Fridayfrietday.Controllers;
 using Newtonsoft.Json;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace Fridayfrietday.Controllers
 {
@@ -109,5 +110,35 @@ namespace Fridayfrietday.Controllers
             var cartJson = JsonConvert.SerializeObject(cart);
             HttpContext.Session.SetString("Cart", cartJson);
         }
+
+        public IActionResult Index()
+        {
+
+            IEnumerable<Order> orders = [];
+            orders = _context.Orders
+                .Where(o => o.OrderDate > DateTime.Now.AddDays(-1))
+                .OrderByDescending(o => o.OrderDate) // Sorteer de orders aflopend op OrderDate
+                .Include(o => o.OrderDetails) // Include order details for each order
+                .ThenInclude(od => od.Product) // Include the product for each order detail
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.SelectedSauces) // Include selected sauces for each order detail
+                .ThenInclude(ods => ods.Sauce) // Include the sauce details
+                .ToList();
+            
+            return View(orders);
+        }
+        [HttpPost]
+        public IActionResult UpdateOrderStatus(int orderId, string OrderStatus)
+        {
+            var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
+            if (order != null)
+            {
+                order.OrderStatus = OrderStatus;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index"); // Verander indien nodig naar de juiste actie
+        }
+
     }
 }

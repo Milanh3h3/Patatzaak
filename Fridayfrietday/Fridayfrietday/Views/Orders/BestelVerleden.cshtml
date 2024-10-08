@@ -60,7 +60,10 @@
                                     @foreach (var detail in order.OrderDetails)
                                     {
                                         <li class="list-group-item">
-                                            @detail.Product?.Name - Quantity: @detail.Quantity
+                                            <div class="d-flex align-items-center">
+                                                <img src="~/Images/@detail.Product.ImageLink" alt="@detail.Product?.Name" class="img-thumbnail me-3" style="width: 70px; height: 70px;">
+                                                @detail.Product?.Name - Quantity: @detail.Quantity
+                                            </div>
                                             <ul class="list-group">
                                                 @foreach (var sauce in detail.SelectedSauces)
                                                 {

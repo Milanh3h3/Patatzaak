@@ -8,6 +8,7 @@ namespace Fridayfrietday.Models
         [Key]
         public int Id { get; set; }
         [Required]
+        [DataType(DataType.Currency)]
         public double TotalPrice { get; set; }
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }

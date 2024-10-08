@@ -17,6 +17,7 @@ namespace Fridayfrietday.Models
         public int CategoryId { get; set; }
         public Category? Category { get; set; } // Navigation property for category
         [Required]
+        [DataType(DataType.Currency)]
         public double Price { get; set; }
         public bool AllowsSauces { get; set; } // true voor friet, false voor dranken bv
         public string ImageLink { get; set; }

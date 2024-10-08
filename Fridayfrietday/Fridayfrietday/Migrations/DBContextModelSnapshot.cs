@@ -41,7 +41,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -79,7 +79,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
 
                     b.HasData(
                         new
@@ -122,7 +122,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
 
                     b.HasData(
                         new
@@ -168,7 +168,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
 
                     b.HasData(
                         new
@@ -214,7 +214,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasIndex("SauceId");
 
-                    b.ToTable("OrderDetailSauces");
+                    b.ToTable("OrderDetailSauces", (string)null);
 
                     b.HasData(
                         new
@@ -261,7 +261,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -383,7 +383,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
 
                     b.HasData(
                         new
@@ -422,7 +422,7 @@ namespace Fridayfrietday.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sauces");
+                    b.ToTable("Sauces", (string)null);
 
                     b.HasData(
                         new
