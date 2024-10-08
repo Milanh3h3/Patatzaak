@@ -128,17 +128,20 @@ namespace Fridayfrietday.Controllers
             return View(orders);
         }
         [HttpPost]
-        public IActionResult UpdateOrderStatus(int orderId, string OrderStatus)
+        public IActionResult UpdateOrderStatus(int orderId, string orderStatus, DateTime? VerwachteOphaaltijd)
         {
             var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
+
             if (order != null)
             {
-                order.OrderStatus = OrderStatus;
+                order.OrderStatus = orderStatus;
+                order.VerwachteOphaaltijd = VerwachteOphaaltijd;
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("Index"); // Verander indien nodig naar de juiste actie
+            return RedirectToAction("Index");
         }
+
 
     }
 }

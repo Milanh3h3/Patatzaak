@@ -19,6 +19,7 @@ namespace Fridayfrietday.Models
         public int PickupNumber { get; set; }
         [Required]
         public string? OrderStatus { get; set; }
+        public DateTime? VerwachteOphaaltijd { get; set; }
 
     }
 }

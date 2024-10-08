@@ -45,6 +45,10 @@
                                     <option value="Bestelling bereid" selected="@(order.OrderStatus == "Bestelling bereid" ? "selected" : null)">Bestelling bereid</option>
                                     <option value="Bestelling opgehaald" selected="@(order.OrderStatus == "Bestelling opgehaald" ? "selected" : null)">Bestelling opgehaald</option>
                                 </select>
+                                <div class="form-group mt-2">
+                                    <label for="VerwachteOphaaltijd">Verwachte ophaaltijd:</label>
+                                    <input type="time" name="VerwachteOphaaltijd" class="form-control" value="@order.VerwachteOphaaltijd?.ToString("HH:mm")" onchange="this.form.submit()" />
+                                </div>
                             </form>
                         </td>
 
