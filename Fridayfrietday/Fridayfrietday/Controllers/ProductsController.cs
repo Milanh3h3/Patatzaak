@@ -9,6 +9,7 @@ using Fridayfrietday;
 using Fridayfrietday.Models;
 using Microsoft.AspNetCore.Authorization;
 using Fridayfrietday.ViewModels;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace Fridayfrietday.Controllers
 {
@@ -16,11 +17,13 @@ namespace Fridayfrietday.Controllers
     {
         private readonly DBContext _context;
         private readonly ShoppingCartService _shoppingCartService;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public ProductsController(DBContext context, ShoppingCartService shoppingCartService)
+        public ProductsController(DBContext context, ShoppingCartService shoppingCartService, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
             _shoppingCartService = shoppingCartService;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: Products
@@ -40,63 +43,69 @@ namespace Fridayfrietday.Controllers
             return View(viewModel);
         }
 
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-
         // GET: Products/Create
+        [HttpGet]
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewBag.Categories = _context.Categories.ToList(); 
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CategoryId,Price,AllowsSauces")] Product product)
+        public IActionResult Create(Product product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (product.ImageFile != null)
+                {
+                    string wwwRootPath = _hostingEnvironment.WebRootPath;
+                    string imagePath = Path.Combine(wwwRootPath, "Images");
+                    if (!Directory.Exists(imagePath))
+                    {
+                        Directory.CreateDirectory(imagePath);
+                    }
+ 
+                    // Create a unique file name to prevent overwriting existing images
+                    string fileName = Guid.NewGuid().ToString() + "_" + product.ImageFile.FileName;
+                    string filePath = Path.Combine(imagePath, fileName);
+
+                    // Save the file to the server
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        product.ImageFile.CopyTo(fileStream);
+                    }
+
+                    // Save the relative path to the database
+                    product.ImageLink = fileName;
+                }
+
+                _context.Products.Add(product);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+
+            ViewBag.Categories = _context.Categories.ToList();
             return View(product);
         }
-        //edit
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id)
+        // GET: Products/Edit/5
+        [HttpGet]
+        public IActionResult Edit(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = _context.Products.Find(id);
             if (product == null)
             {
                 return NotFound();
             }
+
+            ViewBag.Categories = _context.Categories.ToList(); // For category dropdown
             return View(product);
         }
-        //edit
+
+        // POST: Products/Edit/5
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, Product product)
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Product product)
         {
             if (id != product.Id)
             {
@@ -105,51 +114,117 @@ namespace Fridayfrietday.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Update(product);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    // Check if a new image has been uploaded
+                    if (product.ImageFile != null)
+                    {
+                        // Get the wwwroot path
+                        string wwwRootPath = _hostingEnvironment.WebRootPath;
+                        string imagePath = Path.Combine(wwwRootPath, "Images");
+
+                        // Ensure the Images folder exists
+                        if (!Directory.Exists(imagePath))
+                        {
+                            Directory.CreateDirectory(imagePath);
+                        }
+
+                        // Generate unique file name
+                        string fileName = Guid.NewGuid().ToString() + "_" + product.ImageFile.FileName;
+                        string filePath = Path.Combine(imagePath, fileName);
+
+                        // Save the new file
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            product.ImageFile.CopyTo(fileStream);
+                        }
+
+                        // Optionally delete the old image
+                        if (!string.IsNullOrEmpty(product.ImageLink))
+                        {
+                            string oldImagePath = Path.Combine(wwwRootPath, product.ImageLink.TrimStart('/'));
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                        }
+
+                        // Set new ImageLink
+                        product.ImageLink = "/Images/" + fileName;
+                    }
+
+                    _context.Update(product);
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Products.Any(e => e.Id == product.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Categories = _context.Categories.ToList(); // Repopulate the dropdown on error
             return View(product);
-        }
-
-
-        // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
+        }
+        // GET: Products/Delete/5
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var product = _context.Products.Find(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product); // Pass the product to the view for confirmation
+        }
+
+        // POST: Products/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var product = _context.Products.Find(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            // Optionally delete the associated image
+            if (!string.IsNullOrEmpty(product.ImageLink))
+            {
+                string wwwRootPath = _hostingEnvironment.WebRootPath;
+                string imagePath = Path.Combine(wwwRootPath, product.ImageLink.TrimStart('/'));
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+
+            _context.Products.Remove(product);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index)); // Redirect to product listing after deletion
+        }
+
+        // GET: Products
+        public IActionResult Overview()
+        {
+            var products = _context.Products.Include(p => p.Category).OrderBy(p => p.CategoryId).ToList();
+            return View(products);
         }
     }
 }
