@@ -43,5 +43,13 @@ namespace Fridayfrietday.Controllers
         {
             return View();
         }
+
+        [Route("Home/Error/{statusCode}")]
+        public IActionResult HttpStatusCodeHandler(int statusCode)
+        {
+            return View("Error"); 
+        }
+       
+
     }
 }
