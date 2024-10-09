@@ -25,6 +25,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
     <!-- Template Stylesheet -->
     <link href="~/css/style.css" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
     <!-- Navbar Start -->
@@ -54,6 +59,7 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="/Home" class="nav-item nav-link">Startpagina</a>
                 <a href="/Products" class="nav-item nav-link">Bestellen</a>
+                <a href="/Cart/ViewCart" class="nav-item nav-link">Winkelmandje</a>
                 <a href="/Reviews" class="nav-item nav-link">Beoordelingen</a>
                 <a href="/Orders/Bestelverleden" class="nav-item nav-link">Mijn Bestelverleden</a>
                 <a href="/Home/Contact" class="nav-item nav-link">Contact</a>
@@ -87,7 +93,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Address</h4>
+                    <h4 class="text-light mb-4">Adress</h4>
                     <p><i class="fa fa-map-marker-alt me-3"></i>Frietlaan 21, Maastricht</p>
                     <p><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
                     <p><i class="fa fa-envelope me-3"></i>FrietjesTeKoop@Snackbar.com</p>
@@ -98,9 +104,9 @@
                     <p>>    Za-Zo 15:00 - 22:00</p>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Quick Links</h4>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="/Contact">Contact Us</a>
+                    <h4 class="text-light mb-4">Snelle links</h4>
+                    <a class="btn btn-link" href="/Home/Index#doel">Over ons</a>
+                    <a class="btn btn-link" href="/Contact">Contact</a>
                 </div>
             </div>
         </div>

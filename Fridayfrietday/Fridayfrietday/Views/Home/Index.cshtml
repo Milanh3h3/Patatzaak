@@ -49,7 +49,7 @@
     </div>
     <!-- Carousel End -->
     <!-- About Start -->
-    <div class="container-xxl py-5">
+    <div id="doel" class="container-xxl py-5">
         <div class="container">
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
@@ -113,7 +113,7 @@
                                          {
                                             <small class="w-50 text-center border-end py-2">
                                                 <a class="text-body customize-btn" href="#" data-product-id="@product.Id">
-                                                    <i class="fa fa-eye text-primary me-2"></i> Customize
+                                                    <i class="fa fa-eye text-primary me-2"></i> Bewerken
                                                 </a>
                                             </small>
                                          }
@@ -123,7 +123,7 @@
                                                 <input type="hidden" name="SelectedSauceIds" id="selectedSauceIds-@product.Id" />
                                                 <input type="hidden" name="Quantity" value="1" />
                                                 <button type="button" class="btn btn-primary add-to-cart-btn" data-product-id="@product.Id">
-                                                    <i class="fa fa-shopping-bag text-white me-2"></i> Add to cart
+                                                    <i class="fa fa-shopping-bag text-white me-2"></i> Toevoegen
                                                 </button>
                                             </form>
                                         </small>
@@ -140,7 +140,7 @@
 </div>
 
 <div class="text-md-end  wow fadeIn" data-wow-delay="0.5s">
-    <a class="btn btn-lg btn-secondary rounded-pill py-3 px-5" href="Cart/ViewCart">Afrekenen</a>
+    <a class="btn btn-lg btn-secondary rounded-pill py-3 px-5" href="Cart/ViewCart">Winkelwagen bekijken</a>
 </div>
     <!-- Product End -->
     <!-- Firm Visit Start -->
@@ -200,19 +200,18 @@
     <!-- Testimonial End -->
 
     <!-- model for customize products-->
-
 <div class="modal fade" id="customiseModal" tabindex="-1" aria-labelledby="customiseModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="customiseModalLabel">Customize Your Product</h5>
+                <h5 class="modal-title" id="customiseModalLabel">Voeg Sauzen toe aan je product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="customizeForm" method="post">
                     <input type="hidden" name="ProductId" id="modalProductId" />
                     <div class="mb-3">
-                        <label for="sauces" class="form-label">Select Sauces:</label>
+                        <label for="sauces" class="form-label">Selecteer Sauzen:</label>
                         <div id="sauceOptions" class="form-check">
                             @foreach (var sauce in Model.AvailableSauces)
                             {
@@ -233,7 +232,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="customizeAndAddToCart()">Add to Cart</button>
+                <button type="button" class="btn btn-primary" onclick="customizeAndAddToCart()">Toevoegen aan winkelwagen</button>
             </div>
         </div>
     </div>

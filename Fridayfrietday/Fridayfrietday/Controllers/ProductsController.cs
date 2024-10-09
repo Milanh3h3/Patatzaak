@@ -150,9 +150,8 @@ namespace Fridayfrietday.Controllers
                         }
 
                         // Set new ImageLink
-                        product.ImageLink = "/Images/" + fileName;
+                        product.ImageLink = fileName;
                     }
-
                     _context.Update(product);
                     _context.SaveChanges();
                 }

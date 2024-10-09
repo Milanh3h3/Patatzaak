@@ -91,7 +91,7 @@
 </div>
 
 <div class="text-md-end  wow fadeIn" data-wow-delay="0.5s">
-    <a class="btn btn-lg btn-secondary rounded-pill py-3 px-5" href="Cart/ViewCart">Afrekenen</a>
+    <a class="btn btn-lg btn-secondary rounded-pill py-3 px-5" href="Cart/ViewCart">Winkelwagen bekijken</a>
 </div>
 
 <!-- Modal for Customizing Product -->
@@ -99,14 +99,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="customiseModalLabel">Customize Your Product</h5>
+                <h5 class="modal-title" id="customiseModalLabel">Voeg Sauzen toe aan je product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="customizeForm" method="post">
                     <input type="hidden" name="ProductId" id="modalProductId" />
                     <div class="mb-3">
-                        <label for="sauces" class="form-label">Select Sauces:</label>
+                        <label for="sauces" class="form-label">Selecteer Sauzen:</label>
                         <div id="sauceOptions" class="form-check">
                             @foreach (var sauce in Model.AvailableSauces)
                             {
@@ -127,7 +127,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="customizeAndAddToCart()">Add to Cart</button>
+                <button type="button" class="btn btn-primary" onclick="customizeAndAddToCart()">Toevoegen</button>
             </div>
         </div>
     </div>
