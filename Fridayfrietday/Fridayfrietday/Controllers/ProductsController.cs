@@ -82,7 +82,7 @@ namespace Fridayfrietday.Controllers
 
                 _context.Products.Add(product);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Overview");
             }
 
             ViewBag.Categories = _context.Categories.ToList();
@@ -116,14 +116,10 @@ namespace Fridayfrietday.Controllers
             {
                 try
                 {
-                    // Check if a new image has been uploaded
                     if (product.ImageFile != null)
                     {
-                        // Get the wwwroot path
                         string wwwRootPath = _hostingEnvironment.WebRootPath;
                         string imagePath = Path.Combine(wwwRootPath, "Images");
-
-                        // Ensure the Images folder exists
                         if (!Directory.Exists(imagePath))
                         {
                             Directory.CreateDirectory(imagePath);
@@ -133,25 +129,22 @@ namespace Fridayfrietday.Controllers
                         string fileName = Guid.NewGuid().ToString() + "_" + product.ImageFile.FileName;
                         string filePath = Path.Combine(imagePath, fileName);
 
-                        // Save the new file
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
                             product.ImageFile.CopyTo(fileStream);
                         }
 
-                        // Optionally delete the old image
                         if (!string.IsNullOrEmpty(product.ImageLink))
                         {
-                            string oldImagePath = Path.Combine(wwwRootPath, product.ImageLink.TrimStart('/'));
+                            string oldImagePath = Path.Combine(wwwRootPath, product.ImageLink);
                             if (System.IO.File.Exists(oldImagePath))
                             {
                                 System.IO.File.Delete(oldImagePath);
                             }
                         }
-
-                        // Set new ImageLink
                         product.ImageLink = fileName;
                     }
+                    
                     _context.Update(product);
                     _context.SaveChanges();
                 }
@@ -167,10 +160,10 @@ namespace Fridayfrietday.Controllers
                     }
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Overview));
             }
 
-            ViewBag.Categories = _context.Categories.ToList(); // Repopulate the dropdown on error
+            ViewBag.Categories = _context.Categories.ToList(); 
             return View(product);
         }
 
@@ -188,7 +181,7 @@ namespace Fridayfrietday.Controllers
                 return NotFound();
             }
 
-            return View(product); // Pass the product to the view for confirmation
+            return View(product);
         }
 
         // POST: Products/Delete/5
@@ -216,7 +209,7 @@ namespace Fridayfrietday.Controllers
             _context.Products.Remove(product);
             _context.SaveChanges();
 
-            return RedirectToAction(nameof(Index)); // Redirect to product listing after deletion
+            return RedirectToAction(nameof(Overview));
         }
 
         // GET: Products
