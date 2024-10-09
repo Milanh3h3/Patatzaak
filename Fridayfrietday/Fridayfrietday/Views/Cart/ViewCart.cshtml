@@ -54,7 +54,13 @@
                                             <span>@orderDetail.Product?.Name</span>
                                         </div>
                                     </td>
-                                    <td>@orderDetail.Quantity</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <button type="button" class="btn btn-outline-secondary me-2 update-quantity" data-id="@orderDetail.Product.Id" data-change="-1">-1</button>
+                                            <input type="number" class="form-control text-center" value="@orderDetail.Quantity" id="quantity-@orderDetail.Product.Id" readonly min="1" style="width: 60px;">
+                                            <button type="button" class="btn btn-outline-secondary ms-2 update-quantity" data-id="@orderDetail.Product.Id" data-change="1">+1</button>
+                                        </div>
+                                    </td>
                                     <td>
                                         @if (orderDetail.SelectedSauces != null && orderDetail.SelectedSauces.Any())
                                         {
@@ -111,3 +117,4 @@
 <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
 <script src="~/js/Product.js"></script>
 <script src="~/js/main.js"></script>
+<script src="~/js/ViewCart.js"></script>

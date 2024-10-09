@@ -52,7 +52,7 @@
                             <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="product-item">
                                     <div class="position-relative bg-light overflow-hidden">
-                                        <a href="#" class="customize-btn" data-product-id="@product.Id">
+                                        <a href="#" class="customize-btn" data-product-id="@product.Id" data-product-name="@product.Name">
                                             <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
                                         </a>
                                     </div>
@@ -64,7 +64,7 @@
                                         @if (product.AllowsSauces)
                                         {
                                             <small class="w-50 text-center border-end py-2">
-                                                <a class="text-body customize-btn" href="#" data-product-id="@product.Id">
+                                                <a class="text-body customize-btn" href="#" data-product-id="@product.Id" data-product-name="@product.Name">
                                                     <i class="fa fa-eye text-primary me-2"></i> Bewerken
                                                 </a>
                                             </small>

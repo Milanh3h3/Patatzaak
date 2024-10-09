@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Fridayfrietday;
+using Microsoft.CodeAnalysis;
 
 namespace Fridayfrietday.Controllers;
 public class CartController : Controller
@@ -178,5 +179,45 @@ public class CartController : Controller
         return RedirectToAction("Bestelverleden", "Orders", new { email });
 
     }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult UpdateQuantity(int productId, int quantity)
+    {
+        // Get the cart from session
+        var cart = GetCartFromSession();
+
+        // Find the order detail in the cart
+        var orderDetail = cart.FirstOrDefault(od => od.Product.Id == productId);
+
+        if (orderDetail != null)
+        {
+            cart.Remove(orderDetail);
+            orderDetail.Quantity = quantity;
+            cart.Add(orderDetail);
+            SaveCartToSession(cart);
+        }
+
+        return Json(new { success = true });
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult RemoveItem(int productId)
+    {
+        // Get the cart from session
+        var cart = GetCartFromSession();
+
+        // Find the order detail in the cart
+        var orderDetail = cart.FirstOrDefault(od => od.Product.Id == productId);
+
+        if (orderDetail != null)
+        {
+            // Remove the order detail from the cart
+            cart.Remove(orderDetail);
+            SaveCartToSession(cart);
+        }
+
+        return Json(new { success = true });
+    }
+
 
 }

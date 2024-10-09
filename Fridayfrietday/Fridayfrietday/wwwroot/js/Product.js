@@ -1,8 +1,11 @@
-﻿function openCustomizeModal(productId) {
+﻿function openCustomizeModal(productId, productName) {
     document.getElementById('modalProductId').value = productId;
+    document.getElementById('modalProductName').textContent = productName; // Update product name in modal
+
     var customiseModal = new bootstrap.Modal(document.getElementById('customiseModal'));
     customiseModal.show();
 }
+
 function customizeAndAddToCart() {
     const productId = document.getElementById('modalProductId').value;
 
@@ -41,7 +44,6 @@ function customizeAndAddToCart() {
             console.error('Error:', error);
         });
 }
-
 document.addEventListener('DOMContentLoaded', function () {
     // Add click event to Customize buttons
     const customizeButtons = document.querySelectorAll('.customize-btn');
@@ -49,7 +51,13 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function (event) {
             event.preventDefault();
             const productId = button.getAttribute('data-product-id');
+            const productName = button.getAttribute('data-product-name'); // Get the product name
+
+            // Set the hidden field with the productId
             document.getElementById('modalProductId').value = productId;
+
+            // Set the modal title with the product name
+            document.getElementById('customiseModalLabel').textContent = "Customize " + productName;
 
             // Show the customize modal
             var customiseModal = new bootstrap.Modal(document.getElementById('customiseModal'));
@@ -57,6 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+
 document.addEventListener('DOMContentLoaded', function () {
     // Add click event to each 'Add to Cart' button
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
