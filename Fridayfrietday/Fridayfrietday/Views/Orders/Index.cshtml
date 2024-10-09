@@ -6,7 +6,7 @@
         <h1 class="display-3 mb-3 animated slideInDown">Huidige bestellingen</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a class="text-body" href="/Home">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-body" href="/Home">Startpagina</a></li>
                 <li class="breadcrumb-item text-dark active" aria-current="page">Bestellingen</li>
             </ol>
         </nav>
@@ -21,11 +21,11 @@
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Date</th>
-                    <th>Total Price</th>
+                    <th>Datum</th>
+                    <th>Totale prijs</th>
                     <th>Afhaalnummer</th>
                     <th>Status</th>
-                    <th>Details</th>
+                    <th>Producten</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,7 +33,7 @@
                 {
                     <tr>
                         <td>@order.OrderDate?.ToString("g")</td>
-                        <td>@order.TotalPrice</td>
+                        <td>€ @order.TotalPrice</td>
                         <td>@order.PickupNumber</td>
 
                         <td>

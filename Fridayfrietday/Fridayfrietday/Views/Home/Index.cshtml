@@ -30,7 +30,7 @@
                         <div class="row justify-content-start">
                             <div class="col-lg-7">
                                 <h1 class="display-2 mb-5 animated slideInDown" style="background-color: rgba(0, 0, 0, 0.4); color: #fff; padding: 10px; border-radius: 10px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
-                                    Bekijk onze deals!
+                                    Bekijk onze aanbiedingen!
                                 </h1>
                                 <a href="/Products" class="btn btn-primary rounded-pill py-sm-3 px-sm-5">Bestel nu</a>
                             </div>
@@ -93,30 +93,30 @@
         <div class="tab-content">
             @foreach (var category in Model.Products.Select(p => p.Category).Distinct())
             {
-                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Products.Select(p => p.Category).FirstOrDefault()) {
-            <text>show active</text>
-}">
+                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Products.Select(p => p.Category).FirstOrDefault()) {<text>show active</text>}">
                     <div class="row g-4">
                         @foreach (var product in Model.Products.Where(p => p.CategoryId == category.Id))
                         {
                             <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="product-item">
                                     <div class="position-relative bg-light overflow-hidden">
-                                        <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
+                                        <a href="#" class="customize-btn" data-product-id="@product.Id">
+                                            <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
+                                        </a>
                                     </div>
                                     <div class="text-center p-4">
                                         <a class="d-block h5 mb-2" href="#">@product.Name</a>
                                         <span class="text-primary me-1">€ @product.Price.ToString("0.00")</span>
                                     </div>
                                     <div class="d-flex border-top">
-                                        @if (product.AllowsSauces)
-                                        {
+                                         @if (product.AllowsSauces)
+                                         {
                                             <small class="w-50 text-center border-end py-2">
                                                 <a class="text-body customize-btn" href="#" data-product-id="@product.Id">
                                                     <i class="fa fa-eye text-primary me-2"></i> Customize
                                                 </a>
                                             </small>
-                                        }
+                                         }
                                         <small class="w-50 text-center py-2">
                                             <form method="post">
                                                 <input type="hidden" name="ProductId" value="@product.Id" />
@@ -130,6 +130,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         }
                     </div>
                 </div>

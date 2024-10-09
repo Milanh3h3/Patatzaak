@@ -13,7 +13,7 @@
         <h1 class="display-3 mb-3 animated slideInDown">Bestellen</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a class="text-body" href="/Home">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-body" href="Startpagina">Startpagina</a></li>
                 <li class="breadcrumb-item text-dark active" aria-current="page">Bestellen</li>
             </ol>
         </nav>
@@ -52,7 +52,9 @@
                             <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="product-item">
                                     <div class="position-relative bg-light overflow-hidden">
-                                        <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
+                                        <a href="#" class="customize-btn" data-product-id="@product.Id">
+                                            <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
+                                        </a>
                                     </div>
                                     <div class="text-center p-4">
                                         <a class="d-block h5 mb-2" href="#">@product.Name</a>
@@ -63,7 +65,7 @@
                                         {
                                             <small class="w-50 text-center border-end py-2">
                                                 <a class="text-body customize-btn" href="#" data-product-id="@product.Id">
-                                                    <i class="fa fa-eye text-primary me-2"></i> Customize
+                                                    <i class="fa fa-eye text-primary me-2"></i> Bewerken
                                                 </a>
                                             </small>
                                         }
@@ -73,7 +75,7 @@
                                                 <input type="hidden" name="SelectedSauceIds" id="selectedSauceIds-@product.Id" />
                                                 <input type="hidden" name="Quantity" value="1" />
                                                 <button type="button" class="btn btn-primary add-to-cart-btn" data-product-id="@product.Id">
-                                                    <i class="fa fa-shopping-bag text-white me-2"></i> Add to cart
+                                                    <i class="fa fa-shopping-bag text-white me-2"></i> Toevoegen aan winkelwagen
                                                 </button>
                                             </form>
                                         </small>
