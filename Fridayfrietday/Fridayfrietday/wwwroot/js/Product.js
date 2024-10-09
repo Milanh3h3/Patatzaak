@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('modalProductId').value = productId;
 
             // Set the modal title with the product name
-            document.getElementById('customiseModalLabel').textContent = "Customize " + productName;
+            document.getElementById('customiseModalLabel').textContent = "Personaliseer " + productName;
 
             // Show the customize modal
             var customiseModal = new bootstrap.Modal(document.getElementById('customiseModal'));
