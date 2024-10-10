@@ -100,9 +100,18 @@
                             <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="product-item">
                                     <div class="position-relative bg-light overflow-hidden">
-                                        <a href="#" class="customize-btn" data-product-id="@product.Id" data-product-name="@product.Name">
-                                            <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
-                                        </a>
+                                        @if (product.AllowsSauces == true)
+                                        {
+                                            <a href="#" class="customize-btn" data-product-id="@product.Id" data-product-name="@product.Name">
+                                                <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a>
+                                                <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
+                                            </a>
+                                        }
                                     </div>
                                     <div class="text-center p-4">
                                         <a class="d-block h5 mb-2" href="#">@product.Name</a>
@@ -233,7 +242,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantity:</label>
+                        <label for="quantity" class="form-label">Hoeveelheid:</label>
                         <input type="number" id="quantity" name="Quantity" class="form-control" value="1" min="1" />
                     </div>
                 </form>

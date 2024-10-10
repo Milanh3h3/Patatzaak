@@ -2,10 +2,18 @@
     document.getElementById('modalProductId').value = productId;
     document.getElementById('modalProductName').textContent = productName; // Update product name in modal
 
+    // Reset checkboxes
+    resetCheckboxes();
+
     var customiseModal = new bootstrap.Modal(document.getElementById('customiseModal'));
     customiseModal.show();
 }
-
+function resetCheckboxes() {
+    const sauceOptions = document.querySelectorAll('#sauceOptions input[type="checkbox"]');
+    sauceOptions.forEach(checkbox => {
+        checkbox.checked = false; // Uncheck each checkbox
+    });
+}
 function customizeAndAddToCart() {
     const productId = document.getElementById('modalProductId').value;
 
@@ -33,14 +41,14 @@ function customizeAndAddToCart() {
             throw new Error('Network response was not ok.');
         })
         .then(data => {
-            alert('Customized product added to cart successfully!');
+            alert('gepersonaliseerd product succesvol toegevoegd aan het winkelmandje!');
             console.log(data);
             // Close the modal
             const customiseModal = bootstrap.Modal.getInstance(document.getElementById('customiseModal'));
             customiseModal.hide();
         })
         .catch(error => {
-            alert('There was an error adding the customized product to the cart.');
+            alert('Er is iets misgegaan bij het toevoegen van je product. Probeer opnieuw');
             console.error('Error:', error);
         });
 }
@@ -58,6 +66,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Set the modal title with the product name
             document.getElementById('customiseModalLabel').textContent = "Personaliseer " + productName;
+            // Reset checkboxes
+            resetCheckboxes();
 
             // Show the customize modal
             var customiseModal = new bootstrap.Modal(document.getElementById('customiseModal'));
@@ -97,12 +107,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(data => {
                     // Handle success response here
-                    alert('Product added to cart successfully!');
+                    alert('Product succesvol toegevoegd aan het winkelmandje!');
                     console.log(data);
                 })
                 .catch(error => {
                     // Handle error response here
-                    alert('There was an error adding the product to the cart.');
+                    alert('Er is iets misgegaan bij het toevoegen van het product. Probeer opnieuw');
                     console.error('Error:', error);
                 });
         });
