@@ -23,6 +23,8 @@ namespace Fridayfrietday.Models
         public string? ImageLink { get; set; }
 
         [NotMapped] // niet opgeslagen in db
-        public IFormFile? ImageFile { get; set; } 
+        public IFormFile? ImageFile { get; set; }
+
+        public double Discount { get; set; } = 0;
     }
 }

@@ -43,7 +43,7 @@
                         <tbody>
                             @foreach (var orderDetail in Model)
                             {
-                                var productTotalPrice = orderDetail.Product.Price * orderDetail.Quantity;
+                                var productTotalPrice = (orderDetail.Product.Price * ( 1- orderDetail.Product.Discount)) * orderDetail.Quantity;
                                 var sauceTotalPrice = orderDetail.SelectedSauces?.Sum(s => s.Sauce.Price) * orderDetail.Quantity ?? 0;
                                 var totalPrice = productTotalPrice + sauceTotalPrice;
 
@@ -78,7 +78,7 @@
                                             <span>Geen sauzen geselecteerd</span>
                                         }
                                     </td>
-                                    <td>&euro;@totalPrice.ToString("0.00")</td>
+                                    <td>€ @totalPrice.ToString("0.00")</td>
 
                                 </tr>
                             }

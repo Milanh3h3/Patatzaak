@@ -93,9 +93,7 @@
         <div class="tab-content">
             @foreach (var category in Model.Products.Select(p => p.Category).Distinct())
             {
-                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Products.Select(p => p.Category).FirstOrDefault()) {
-            <text>show active</text>
-}">
+                <div id="tab-@category.Id" class="tab-pane fade p-0 @if(category == Model.Products.Select(p => p.Category).FirstOrDefault()) {<text>show active</text>}">
                     <div class="row g-4">
                         @foreach (var product in Model.Products.Where(p => p.CategoryId == category.Id))
                         {
@@ -108,7 +106,15 @@
                                     </div>
                                     <div class="text-center p-4">
                                         <a class="d-block h5 mb-2" href="#">@product.Name</a>
-                                        <span class="text-primary me-1">€ @product.Price.ToString("0.00")</span>
+                                        @if (product.Discount == 0)
+                                        {
+                                            <span class="text-primary me-1">€ @product.Price.ToString("0.00")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-primary me-1"><del>€ @product.Price.ToString("0.00")</del></span> <!--doorgestreept-->
+                                            <span class="text-primary me-1">€ @((product.Price * (1 - product.Discount)).ToString("0.00"))</span>
+                                        }
                                     </div>
                                     <div class="d-flex border-top">
                                         @if (product.AllowsSauces)

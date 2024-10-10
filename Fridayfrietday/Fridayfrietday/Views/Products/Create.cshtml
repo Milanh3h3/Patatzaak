@@ -45,6 +45,12 @@
     </div>
 
     <div class="form-group">
+        <label asp-for="Discount" class="control-label">Korting</label>
+        <input asp-for="Discount" class="form-control" placeholder="Korting in procenten(bv. 10 voor 10% korting)" />
+        <span asp-validation-for="Discount" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
         <label asp-for="AllowsSauces" class="control-label">Sauzen Toegestaan</label>
         <input asp-for="AllowsSauces" type="checkbox" />
         <span asp-validation-for="AllowsSauces" class="text-danger"></span>

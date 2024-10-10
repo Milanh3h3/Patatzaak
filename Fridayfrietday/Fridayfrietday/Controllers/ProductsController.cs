@@ -79,7 +79,7 @@ namespace Fridayfrietday.Controllers
                     // Save the relative path to the database
                     product.ImageLink = fileName;
                 }
-
+                product.Discount = product.Discount / 100;
                 _context.Products.Add(product);
                 _context.SaveChanges();
                 return RedirectToAction("Overview");
@@ -97,7 +97,7 @@ namespace Fridayfrietday.Controllers
             {
                 return NotFound();
             }
-
+            product.Discount = product.Discount * 100;
             ViewBag.Categories = _context.Categories.ToList(); // For category dropdown
             return View(product);
         }
@@ -116,6 +116,7 @@ namespace Fridayfrietday.Controllers
             {
                 try
                 {
+                    string? oldImageLink = _context.Products.AsNoTracking().FirstOrDefault(p => p.Id == id)?.ImageLink;
                     if (product.ImageFile != null)
                     {
                         string wwwRootPath = _hostingEnvironment.WebRootPath;
@@ -144,7 +145,12 @@ namespace Fridayfrietday.Controllers
                         }
                         product.ImageLink = fileName;
                     }
-                    
+                    else
+                    {
+                        // If no new image uploaded, keep the old image link
+                        product.ImageLink = oldImageLink;
+                    }
+                    product.Discount = product.Discount/100;
                     _context.Update(product);
                     _context.SaveChanges();
                 }

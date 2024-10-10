@@ -4,6 +4,7 @@ using Fridayfrietday;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fridayfrietday.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20241010133349_discount")]
+    partial class discount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,7 +128,7 @@ namespace Fridayfrietday.Migrations
                         {
                             Id = 1,
                             CustomerId = 1,
-                            OrderDate = new DateTime(2024, 10, 10, 16, 55, 38, 426, DateTimeKind.Local).AddTicks(7273),
+                            OrderDate = new DateTime(2024, 10, 10, 15, 33, 48, 334, DateTimeKind.Local).AddTicks(9736),
                             OrderStatus = "Opgehaald",
                             PickupNumber = 1,
                             TotalPrice = 11.0
@@ -134,7 +137,7 @@ namespace Fridayfrietday.Migrations
                         {
                             Id = 2,
                             CustomerId = 2,
-                            OrderDate = new DateTime(2024, 10, 10, 16, 55, 38, 426, DateTimeKind.Local).AddTicks(7278),
+                            OrderDate = new DateTime(2024, 10, 10, 15, 33, 48, 334, DateTimeKind.Local).AddTicks(9741),
                             OrderStatus = "Opgehaald",
                             PickupNumber = 2,
                             TotalPrice = 3.5
@@ -241,7 +244,7 @@ namespace Fridayfrietday.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Discount")
+                    b.Property<double?>("Discount")
                         .HasColumnType("float");
 
                     b.Property<string>("ImageLink")
@@ -267,7 +270,6 @@ namespace Fridayfrietday.Migrations
                             Id = 1,
                             AllowsSauces = true,
                             CategoryId = 1,
-                            Discount = 0.0,
                             ImageLink = "Frietenmandje.png",
                             Name = "Friet Groot",
                             Price = 3.5
@@ -277,7 +279,6 @@ namespace Fridayfrietday.Migrations
                             Id = 2,
                             AllowsSauces = true,
                             CategoryId = 1,
-                            Discount = 0.0,
                             ImageLink = "Frietenmandje.png",
                             Name = "Friet Medium",
                             Price = 3.0
@@ -287,7 +288,6 @@ namespace Fridayfrietday.Migrations
                             Id = 3,
                             AllowsSauces = true,
                             CategoryId = 1,
-                            Discount = 0.0,
                             ImageLink = "Frietenmandje.png",
                             Name = "Friet Klein",
                             Price = 2.5
@@ -297,7 +297,6 @@ namespace Fridayfrietday.Migrations
                             Id = 4,
                             AllowsSauces = true,
                             CategoryId = 2,
-                            Discount = 0.0,
                             ImageLink = "Bitterballen.png",
                             Name = "Bitterballen",
                             Price = 4.0
@@ -307,7 +306,6 @@ namespace Fridayfrietday.Migrations
                             Id = 5,
                             AllowsSauces = true,
                             CategoryId = 2,
-                            Discount = 0.0,
                             ImageLink = "frikandelspeciaal.png",
                             Name = "Frikandel Speciaal",
                             Price = 2.5
@@ -317,7 +315,6 @@ namespace Fridayfrietday.Migrations
                             Id = 6,
                             AllowsSauces = true,
                             CategoryId = 2,
-                            Discount = 0.0,
                             ImageLink = "frikandelXXL.png",
                             Name = "Frikandel XXL",
                             Price = 5.0
@@ -327,7 +324,6 @@ namespace Fridayfrietday.Migrations
                             Id = 7,
                             AllowsSauces = false,
                             CategoryId = 3,
-                            Discount = 0.0,
                             ImageLink = "Cola.png",
                             Name = "Cola",
                             Price = 3.0
@@ -337,7 +333,6 @@ namespace Fridayfrietday.Migrations
                             Id = 8,
                             AllowsSauces = false,
                             CategoryId = 3,
-                            Discount = 0.0,
                             ImageLink = "fanta.png",
                             Name = "Fanta",
                             Price = 3.0
@@ -347,7 +342,6 @@ namespace Fridayfrietday.Migrations
                             Id = 9,
                             AllowsSauces = false,
                             CategoryId = 3,
-                            Discount = 0.0,
                             ImageLink = "ColaLight.png",
                             Name = "Cola Light",
                             Price = 3.0
@@ -357,7 +351,6 @@ namespace Fridayfrietday.Migrations
                             Id = 10,
                             AllowsSauces = false,
                             CategoryId = 3,
-                            Discount = 0.0,
                             ImageLink = "ColaZero.png",
                             Name = "Cola Zero",
                             Price = 3.0
@@ -397,7 +390,7 @@ namespace Fridayfrietday.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2024, 9, 30, 16, 55, 38, 426, DateTimeKind.Local).AddTicks(7394),
+                            Date = new DateTime(2024, 9, 30, 15, 33, 48, 334, DateTimeKind.Local).AddTicks(9856),
                             Description = "Heerlijke frietjes!",
                             Name = "John Doe",
                             Stars = 4.5m
@@ -405,7 +398,7 @@ namespace Fridayfrietday.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2024, 10, 5, 16, 55, 38, 426, DateTimeKind.Local).AddTicks(7401),
+                            Date = new DateTime(2024, 10, 5, 15, 33, 48, 334, DateTimeKind.Local).AddTicks(9863),
                             Description = "Snacks waren goed, maar had liever meer saus.",
                             Name = "Jane Smith",
                             Stars = 3.5m

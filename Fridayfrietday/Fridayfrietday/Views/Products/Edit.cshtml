@@ -23,13 +23,13 @@
     <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
-        <label asp-for="Name" class="control-label"></label>
+        <label asp-for="Name" class="control-label">Naam</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="CategoryId" class="control-label"></label>
+        <label asp-for="CategoryId" class="control-label">Categorie</label>
         <select asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name", Model.CategoryId))" class="form-control">
             <option value="">Selecteer een categorie</option>
         </select>
@@ -37,13 +37,19 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Price" class="control-label"></label>
+        <label asp-for="Price" class="control-label">Prijs</label>
         <input asp-for="Price" class="form-control" type="number" step="0,01"/>
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="AllowsSauces" class="control-label"></label>
+        <label asp-for="Discount" class="control-label">Korting</label>
+        <input asp-for="Discount" class="form-control" type="number" step ="1" placeholder="Korting in procenten(bv. 10 voor 10% korting)" />
+        <span asp-validation-for="Discount" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AllowsSauces" class="control-label">Sauzen toegestaan?</label>
         <input asp-for="AllowsSauces" type="checkbox" />
         <span asp-validation-for="AllowsSauces" class="text-danger"></span>
     </div>

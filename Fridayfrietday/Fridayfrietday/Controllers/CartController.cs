@@ -131,8 +131,8 @@ public class CartController : Controller
                     totalsauceprice += ods.Sauce.Price;
                 }
 
-            } 
-            totalprice += (totalsauceprice + detail.Product.Price) * detail.Quantity;
+            }
+            totalprice += (totalsauceprice + (detail.Product.Price * (1 - detail.Product.Discount))) * detail.Quantity;
         }
 
 
