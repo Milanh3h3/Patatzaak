@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DBContext>();
-builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache(); // Enable session storage
 builder.Services.AddSession(); // Add session middleware
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -14,6 +13,7 @@ builder.Services.AddScoped<ShoppingCartService>();
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -27,7 +27,7 @@ cultureInfo.NumberFormat.CurrencyDecimalSeparator = ",";
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
