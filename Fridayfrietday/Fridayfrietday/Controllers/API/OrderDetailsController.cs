@@ -12,6 +12,7 @@ namespace Fridayfrietday.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class OrderDetailsController : ControllerBase
     {
         private readonly DBContext _context;
@@ -21,14 +22,24 @@ namespace Fridayfrietday.Controllers.API
             _context = context;
         }
 
-        // GET: api/OrderDetails
+        /// <summary>
+        /// Haalt alle orderdetails op.
+        /// </summary>
+        /// <returns>Een lijst van alle orderdetails</returns>
+        /// <response code="200">Geeft de lijst met orderdetails terug</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderDetail>>> GetOrderDetails()
         {
             return await _context.OrderDetails.ToListAsync();
         }
 
-        // GET: api/OrderDetails/5
+        /// <summary>
+        /// Haalt een specifiek orderdetail op.
+        /// </summary>
+        /// <param name="id">Het ID van het orderdetail</param>
+        /// <returns>Het orderdetail met het opgegeven ID</returns>
+        /// <response code="200">Geeft het orderdetail terug</response>
+        /// <response code="404">Als het orderdetail niet wordt gevonden</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDetail>> GetOrderDetail(int id)
         {
@@ -42,8 +53,15 @@ namespace Fridayfrietday.Controllers.API
             return orderDetail;
         }
 
-        // PUT: api/OrderDetails/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update een specifiek orderdetail.
+        /// </summary>
+        /// <param name="id">Het ID van het orderdetail dat je wilt bijwerken</param>
+        /// <param name="orderDetail">De bijgewerkte gegevens van het orderdetail</param>
+        /// <returns>Geen inhoud als de update succesvol is</returns>
+        /// <response code="204">Update was succesvol</response>
+        /// <response code="400">Als de verstrekte gegevens onjuist zijn</response>
+        /// <response code="404">Als het orderdetail met het opgegeven ID niet bestaat</response>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrderDetail(int id, OrderDetail orderDetail)
         {
@@ -73,8 +91,26 @@ namespace Fridayfrietday.Controllers.API
             return NoContent();
         }
 
-        // POST: api/OrderDetails
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Voegt een nieuw orderdetail toe.
+        /// </summary>
+        /// <param name="orderDetail">De gegevens van het nieuwe orderdetail</param>
+        /// <returns>Het nieuw aangemaakte orderdetail</returns>
+        /// <remarks>
+        /// Voorbeeld request:
+        ///
+        ///     POST /OrderDetails
+        ///     {
+        ///        "id": 1,
+        ///        "orderId": 1,
+        ///        "productId": 1,
+        ///        "quantity": 2,
+        ///        "price": 10.00
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Geeft het nieuw aangemaakte orderdetail terug</response>
+        /// <response code="400">Als de verstrekte gegevens ongeldig zijn</response>
         [HttpPost]
         public async Task<ActionResult<OrderDetail>> PostOrderDetail(OrderDetail orderDetail)
         {
@@ -84,7 +120,13 @@ namespace Fridayfrietday.Controllers.API
             return CreatedAtAction("GetOrderDetail", new { id = orderDetail.Id }, orderDetail);
         }
 
-        // DELETE: api/OrderDetails/5
+        /// <summary>
+        /// Verwijdert een specifiek orderdetail.
+        /// </summary>
+        /// <param name="id">Het ID van het orderdetail dat moet worden verwijderd</param>
+        /// <returns>Geen inhoud als de verwijdering succesvol is</returns>
+        /// <response code="204">Verwijdering was succesvol</response>
+        /// <response code="404">Als het orderdetail niet wordt gevonden</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderDetail(int id)
         {
@@ -100,6 +142,11 @@ namespace Fridayfrietday.Controllers.API
             return NoContent();
         }
 
+        /// <summary>
+        /// Controleert of een orderdetail bestaat.
+        /// </summary>
+        /// <param name="id">Het ID van het orderdetail</param>
+        /// <returns>True als het orderdetail bestaat, anders false</returns>
         private bool OrderDetailExists(int id)
         {
             return _context.OrderDetails.Any(e => e.Id == id);

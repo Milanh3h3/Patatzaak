@@ -12,6 +12,7 @@ namespace Fridayfrietday.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class CategoriesController : ControllerBase
     {
         private readonly DBContext _context;
@@ -21,14 +22,24 @@ namespace Fridayfrietday.Controllers.API
             _context = context;
         }
 
-        // GET: api/Categories
+        /// <summary>
+        /// Haalt alle categorieën op.
+        /// </summary>
+        /// <returns>Een lijst van alle categorieën</returns>
+        /// <response code="200">Geeft de lijst met categorieën terug</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
             return await _context.Categories.ToListAsync();
         }
 
-        // GET: api/Categories/5
+        /// <summary>
+        /// Haalt een specifieke categorie op.
+        /// </summary>
+        /// <param name="id">Het ID van de categorie</param>
+        /// <returns>De categorie met het opgegeven ID</returns>
+        /// <response code="200">Geeft de categorie terug</response>
+        /// <response code="404">Als de categorie niet wordt gevonden</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
@@ -42,8 +53,15 @@ namespace Fridayfrietday.Controllers.API
             return category;
         }
 
-        // PUT: api/Categories/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update een specifieke categorie.
+        /// </summary>
+        /// <param name="id">Het ID van de categorie die je wilt bijwerken</param>
+        /// <param name="category">De bijgewerkte gegevens van de categorie</param>
+        /// <returns>Geen inhoud als de update succesvol is</returns>
+        /// <response code="204">Update was succesvol</response>
+        /// <response code="400">Als de verstrekte gegevens onjuist zijn</response>
+        /// <response code="404">Als de categorie met het opgegeven ID niet bestaat</response>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
@@ -73,8 +91,23 @@ namespace Fridayfrietday.Controllers.API
             return NoContent();
         }
 
-        // POST: api/Categories
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Voegt een nieuwe categorie toe.
+        /// </summary>
+        /// <param name="category">De gegevens van de nieuwe categorie</param>
+        /// <returns>De nieuw aangemaakte categorie</returns>
+        /// <remarks>
+        /// Voorbeeld request:
+        ///
+        ///     POST /Categories
+        ///     {
+        ///        "id": 1,
+        ///        "name": "Snacks"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Geeft de nieuw aangemaakte categorie terug</response>
+        /// <response code="400">Als de verstrekte gegevens ongeldig zijn</response>
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
@@ -84,7 +117,13 @@ namespace Fridayfrietday.Controllers.API
             return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
-        // DELETE: api/Categories/5
+        /// <summary>
+        /// Verwijdert een specifieke categorie.
+        /// </summary>
+        /// <param name="id">Het ID van de categorie die moet worden verwijderd</param>
+        /// <returns>Geen inhoud als de verwijdering succesvol is</returns>
+        /// <response code="204">Verwijdering was succesvol</response>
+        /// <response code="404">Als de categorie niet wordt gevonden</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
@@ -100,6 +139,11 @@ namespace Fridayfrietday.Controllers.API
             return NoContent();
         }
 
+        /// <summary>
+        /// Controleert of een categorie bestaat.
+        /// </summary>
+        /// <param name="id">Het ID van de categorie</param>
+        /// <returns>True als de categorie bestaat, anders false</returns>
         private bool CategoryExists(int id)
         {
             return _context.Categories.Any(e => e.Id == id);

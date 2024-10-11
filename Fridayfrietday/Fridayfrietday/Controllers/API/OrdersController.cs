@@ -12,6 +12,7 @@ namespace Fridayfrietday.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class OrdersController : ControllerBase
     {
         private readonly DBContext _context;
@@ -21,14 +22,24 @@ namespace Fridayfrietday.Controllers.API
             _context = context;
         }
 
-        // GET: api/Orders
+        /// <summary>
+        /// Haalt alle bestellingen op.
+        /// </summary>
+        /// <returns>Een lijst met alle beschikbare bestellingen</returns>
+        /// <response code="200">Geeft de lijst met bestellingen terug</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
             return await _context.Orders.ToListAsync();
         }
 
-        // GET: api/Orders/5
+        /// <summary>
+        /// Haalt een specifieke bestelling op.
+        /// </summary>
+        /// <param name="id">Het ID van de bestelling</param>
+        /// <returns>De bestelling met het opgegeven ID</returns>
+        /// <response code="200">Geeft de bestelling terug</response>
+        /// <response code="404">Als de bestelling niet wordt gevonden</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
@@ -42,8 +53,15 @@ namespace Fridayfrietday.Controllers.API
             return order;
         }
 
-        // PUT: api/Orders/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update een specifieke bestelling.
+        /// </summary>
+        /// <param name="id">Het ID van de bestelling die je wilt bijwerken</param>
+        /// <param name="order">De bijgewerkte gegevens van de bestelling</param>
+        /// <returns>Geen inhoud als de update succesvol is</returns>
+        /// <response code="204">Update was succesvol</response>
+        /// <response code="400">Als de verstrekte gegevens onjuist zijn</response>
+        /// <response code="404">Als de bestelling met het opgegeven ID niet bestaat</response>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(int id, Order order)
         {
@@ -73,8 +91,26 @@ namespace Fridayfrietday.Controllers.API
             return NoContent();
         }
 
-        // POST: api/Orders
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Voegt een nieuwe bestelling toe.
+        /// </summary>
+        /// <param name="order">De gegevens van de nieuwe bestelling</param>
+        /// <returns>De nieuw aangemaakte bestelling</returns>
+        /// <remarks>
+        /// Voorbeeld request:
+        ///
+        ///     POST /Orders
+        ///     {
+        ///        "id": 1,
+        ///        "customerId": 1,
+        ///        "totalPrice": 15.00,
+        ///        "orderDate": "2024-10-11T12:34:56",
+        ///        "status": "Bestelling aangekomen"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Geeft de nieuw aangemaakte bestelling terug</response>
+        /// <response code="400">Als de verstrekte gegevens ongeldig zijn</response>
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
@@ -84,7 +120,13 @@ namespace Fridayfrietday.Controllers.API
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }
 
-        // DELETE: api/Orders/5
+        /// <summary>
+        /// Verwijdert een specifieke bestelling.
+        /// </summary>
+        /// <param name="id">Het ID van de bestelling die moet worden verwijderd</param>
+        /// <returns>Geen inhoud als de verwijdering succesvol is</returns>
+        /// <response code="204">Verwijdering was succesvol</response>
+        /// <response code="404">Als de bestelling niet wordt gevonden</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
@@ -100,6 +142,11 @@ namespace Fridayfrietday.Controllers.API
             return NoContent();
         }
 
+        /// <summary>
+        /// Controleert of een bestelling bestaat.
+        /// </summary>
+        /// <param name="id">Het ID van de bestelling</param>
+        /// <returns>True als de bestelling bestaat, anders false</returns>
         private bool OrderExists(int id)
         {
             return _context.Orders.Any(e => e.Id == id);

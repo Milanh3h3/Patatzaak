@@ -12,6 +12,7 @@ namespace Fridayfrietday.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class ReviewsController : ControllerBase
     {
         private readonly DBContext _context;
@@ -21,14 +22,24 @@ namespace Fridayfrietday.Controllers.API
             _context = context;
         }
 
-        // GET: api/Reviews
+        /// <summary>
+        /// Haalt alle reviews op
+        /// </summary>
+        /// <returns>Een lijst met alle beschikbare reviews</returns>
+        /// <response code="200">Geeft de lijst met reviews terug</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
         {
             return await _context.Reviews.ToListAsync();
         }
 
-        // GET: api/Reviews/5
+        /// <summary>
+        /// Haalt een specifieke review op
+        /// </summary>
+        /// <param name="id">Het ID van de review</param>
+        /// <returns>De review met het opgegeven ID</returns>
+        /// <response code="200">Geeft de review terug</response>
+        /// <response code="404">Als de review niet wordt gevonden</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<Review>> GetReview(int id)
         {
@@ -42,8 +53,15 @@ namespace Fridayfrietday.Controllers.API
             return review;
         }
 
-        // PUT: api/Reviews/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update een specifieke review
+        /// </summary>
+        /// <param name="id">Het ID van de review die je wilt bijwerken</param>
+        /// <param name="review">De geüpdatete reviewgegevens</param>
+        /// <returns>Geen inhoud als de update succesvol is</returns>
+        /// <response code="204">Update was succesvol</response>
+        /// <response code="400">Als de verstrekte gegevens onjuist zijn</response>
+        /// <response code="404">Als de review met het opgegeven ID niet bestaat</response>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReview(int id, Review review)
         {
@@ -73,8 +91,25 @@ namespace Fridayfrietday.Controllers.API
             return NoContent();
         }
 
-        // POST: api/Reviews
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Voegt een nieuwe review toe
+        /// </summary>
+        /// <param name="review">De reviewgegevens die moeten worden toegevoegd</param>
+        /// <returns>De toegevoegde review</returns>
+        /// <remarks>
+        /// Voorbeeld request:
+        ///
+        ///     POST /Reviews
+        ///     {
+        ///        "id": 1,
+        ///        "title": "Goede service",
+        ///        "rating": 5,
+        ///        "comment": "Ik ben zeer tevreden met de friet!"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Geeft de nieuw aangemaakte review terug</response>
+        /// <response code="400">Als de verstrekte gegevens ongeldig zijn</response>
         [HttpPost]
         public async Task<ActionResult<Review>> PostReview(Review review)
         {
@@ -84,7 +119,13 @@ namespace Fridayfrietday.Controllers.API
             return CreatedAtAction("GetReview", new { id = review.Id }, review);
         }
 
-        // DELETE: api/Reviews/5
+        /// <summary>
+        /// Verwijdert een specifieke review
+        /// </summary>
+        /// <param name="id">Het ID van de review die moet worden verwijderd</param>
+        /// <returns>Geen inhoud als de verwijdering succesvol is</returns>
+        /// <response code="204">Verwijdering was succesvol</response>
+        /// <response code="404">Als de review niet wordt gevonden</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReview(int id)
         {
@@ -100,9 +141,15 @@ namespace Fridayfrietday.Controllers.API
             return NoContent();
         }
 
+        /// <summary>
+        /// Controleert of een review bestaat
+        /// </summary>
+        /// <param name="id">Het ID van de review</param>
+        /// <returns>True als de review bestaat, anders false</returns>
         private bool ReviewExists(int id)
         {
             return _context.Reviews.Any(e => e.Id == id);
         }
+
     }
 }
