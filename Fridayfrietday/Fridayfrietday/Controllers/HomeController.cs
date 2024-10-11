@@ -43,13 +43,13 @@ namespace Fridayfrietday.Controllers
         {
             return View();
         }
-
+        /* Weglaten voor gebruik van api
         [Route("Home/Error/{statusCode}")]
         public IActionResult HttpStatusCodeHandler(int statusCode)
         {
             return View("Error"); 
         }
-       
+       */
 
     }
 }
