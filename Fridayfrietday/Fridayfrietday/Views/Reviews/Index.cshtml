@@ -39,17 +39,17 @@
                 <form asp-action="Index" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="NewReview.Name" class="control-label"></label>
+                        <label asp-for="NewReview.Name" class="control-label">Naam</label>
                         <input asp-for="NewReview.Name" class="form-control" />
                         <span asp-validation-for="NewReview.Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="NewReview.Description" class="control-label"></label>
+                        <label asp-for="NewReview.Description" class="control-label">Beschrijving</label>
                         <textarea asp-for="NewReview.Description" class="form-control"></textarea>
                         <span asp-validation-for="NewReview.Description" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="NewReview.Stars" class="control-label"></label>
+                        <label asp-for="NewReview.Stars" class="control-label">Sterretjes</label>
                         <input asp-for="NewReview.Stars" type="number" min="1" max="5" class="form-control" />
                         <span asp-validation-for="NewReview.Stars" class="text-danger"></span>
                     </div>
