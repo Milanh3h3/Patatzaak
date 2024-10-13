@@ -16,13 +16,11 @@ namespace Fridayfrietday.Controllers
     public class ProductsController : Controller
     {
         private readonly DBContext _context;
-        private readonly ShoppingCartService _shoppingCartService;
         private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public ProductsController(DBContext context, ShoppingCartService shoppingCartService, IWebHostEnvironment hostingEnvironment)
+        public ProductsController(DBContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
-            _shoppingCartService = shoppingCartService;
             _hostingEnvironment = hostingEnvironment;
         }
 

@@ -11,7 +11,6 @@ builder.Services.AddDbContext<DBContext>();
 builder.Services.AddDistributedMemoryCache(); // Enable session storage
 builder.Services.AddSession(); // Add session middleware
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<ShoppingCartService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
