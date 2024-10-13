@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Fridayfrietday;
 using Fridayfrietday.Models;
+using Fridayfrietday.ViewModels;
+using Fridayfrietday.Controllers;
+using Newtonsoft.Json;
+using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace Fridayfrietday.Controllers
 {
@@ -19,146 +24,124 @@ namespace Fridayfrietday.Controllers
             _context = context;
         }
 
-        // GET: Orders
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Bestelverleden(string email)
         {
-            var dBContext = _context.Orders.Include(o => o.Customer);
-            return View(await dBContext.ToListAsync());
-        }
+            var viewModel = new BestelverledenViewModel { Email = email };
 
-        // GET: Orders/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+            if (!string.IsNullOrEmpty(email))
             {
-                return NotFound();
-            }
+                // Fetch customer and include their orders, order details, and selected sauces
+                var customer = _context.Customers.FirstOrDefault(c => c.Email == email);
 
-            var order = await _context.Orders
-                .Include(o => o.Customer)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return View(order);
-        }
-
-        // GET: Orders/Create
-        public IActionResult Create()
-        {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Email");
-            return View();
-        }
-
-        // POST: Orders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TotalPrice,CustomerId")] Order order)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Email", order.CustomerId);
-            return View(order);
-        }
-
-        // GET: Orders/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Email", order.CustomerId);
-            return View(order);
-        }
-
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TotalPrice,CustomerId")] Order order)
-        {
-            if (id != order.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (customer != null)
                 {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
+                    // Haal de orders van de klant op, inclusief de benodigde navigatie-eigenschappen
+                    viewModel.Orders = _context.Orders
+                        .Where(o => o.CustomerId == customer.Id)
+                        .OrderByDescending(o => o.OrderDate) // Sorteer de orders aflopend op OrderDate
+                        .Include(o => o.OrderDetails) // Include order details for each order
+                        .ThenInclude(od => od.Product) // Include the product for each order detail
+                        .Include(o => o.OrderDetails)
+                        .ThenInclude(od => od.SelectedSauces) // Include selected sauces for each order detail
+                        .ThenInclude(ods => ods.Sauce) // Include the sauce details
+                        .ToList();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Email", order.CustomerId);
-            return View(order);
+
+            return View(viewModel);
         }
-
-        // GET: Orders/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpPost]
+        public IActionResult Reorder(int orderId)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            // Find the order and its details
+            var order = _context.Orders
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.SelectedSauces)
+                .FirstOrDefault(o => o.Id == orderId);
 
-            var order = await _context.Orders
-                .Include(o => o.Customer)
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "Order not found.";
+                return RedirectToAction("Bestelverleden");
             }
 
-            return View(order);
+            List<OrderDetail> cart = GetCartFromSession();
+
+            // Add each OrderDetail from the old order to the cart
+            foreach (var orderDetail in order.OrderDetails)
+            {
+                var cartItem = new OrderDetail
+                {
+                    ProductId = orderDetail.ProductId,
+                    Product = _context.Products.AsNoTracking().FirstOrDefault(p => p.Id == orderDetail.ProductId), // read cartcontroller
+                    Quantity = orderDetail.Quantity,
+                    SelectedSauces = orderDetail.SelectedSauces.Select(s => new OrderDetailSauce
+                    {
+                        SauceId = s.SauceId
+                    }).ToList()
+                };
+
+                cart.Add(cartItem);
+            }
+
+            SaveCartToSession(cart);
+
+            // Redirect to the View Cart page
+            return RedirectToAction("ViewCart", "Cart");
+        }
+        // Retrieve cart from session
+        private List<OrderDetail> GetCartFromSession()
+        {
+            var cartJson = HttpContext.Session.GetString("Cart");
+            if (string.IsNullOrEmpty(cartJson))
+            {
+                return new List<OrderDetail>();
+            }
+
+            // Deserialize the cart and include OrderDetailSauces
+            return JsonConvert.DeserializeObject<List<OrderDetail>>(cartJson);
         }
 
-        // POST: Orders/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        // Save cart to session
+        private void SaveCartToSession(List<OrderDetail> cart)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var cartJson = JsonConvert.SerializeObject(cart);
+            HttpContext.Session.SetString("Cart", cartJson);
+        }
+
+        public IActionResult Index()
+        {
+
+            IEnumerable<Order> orders = [];
+            orders = _context.Orders
+                .Where(o => o.OrderDate > DateTime.Now.AddDays(-1))
+                .OrderByDescending(o => o.OrderDate) // Sorteer de orders aflopend op OrderDate
+                .Include(o => o.OrderDetails) // Include order details for each order
+                .ThenInclude(od => od.Product) // Include the product for each order detail
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.SelectedSauces) // Include selected sauces for each order detail
+                .ThenInclude(ods => ods.Sauce) // Include the sauce details
+                .ToList();
+            
+            return View(orders);
+        }
+        [HttpPost]
+        public IActionResult UpdateOrderStatus(int orderId, string orderStatus, DateTime? VerwachteOphaaltijd)
+        {
+            var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
+
             if (order != null)
             {
-                _context.Orders.Remove(order);
+                order.OrderStatus = orderStatus;
+                order.VerwachteOphaaltijd = VerwachteOphaaltijd;
+                _context.SaveChanges();
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
-        private bool OrderExists(int id)
-        {
-            return _context.Orders.Any(e => e.Id == id);
-        }
+
     }
 }

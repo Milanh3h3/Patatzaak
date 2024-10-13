@@ -40,23 +40,23 @@ namespace Fridayfrietday
 
             // Category seeding
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Frieten", Picture = "Frietenmandje.png" },
-                new Category { Id = 2, Name = "Snacks", Picture = "snackslogo.png" },
-                new Category { Id = 3, Name = "Dranken", Picture = "DrinksLogo.png" }
+                new Category { Id = 1, Name = "Frieten"},
+                new Category { Id = 2, Name = "Snacks"},
+                new Category { Id = 3, Name = "Dranken"}
             );
 
             // Product seeding
             modelBuilder.Entity<Product>().HasData(
-                new Product { Id = 1, Name = "Friet Groot", CategoryId = 1, Price = 3.5, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
-                new Product { Id = 2, Name = "Friet Medium", CategoryId = 1, Price = 3.0, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
-                new Product { Id = 3, Name = "Friet Klein", CategoryId = 1, Price = 2.5, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
-                new Product { Id = 4, Name = "Bitterballen", CategoryId = 2, Price = 4.0, AllowsSauces = true, ImageLink = "Bitterballen.png" },
-                new Product { Id = 5, Name = "FrikandelSpeciaal", CategoryId = 2, Price = 2.5, AllowsSauces = true, ImageLink = "frikandelspeciaal.png" },
-                new Product { Id = 6, Name = "Frikandel XXL", CategoryId = 2, Price = 5.0, AllowsSauces = true, ImageLink = "frikandelXXL.png" },
-                new Product { Id = 7, Name = "Cola", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "Cola.png" },
-                new Product { Id = 8, Name = "Fanta", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "fanta.png" },
-                new Product { Id = 9, Name = "Cola Light", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "ColaLight.png" },
-                new Product { Id = 10, Name = "Cola Zero", CategoryId = 3, Price = 3.0, AllowsSauces = false, ImageLink = "ColaZero.png" }
+                new Product { Id = 1, Name = "Friet Groot", CategoryId = 1, Price = 3.5, Discount = 0, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
+                new Product { Id = 2, Name = "Friet Medium", CategoryId = 1, Price = 3.0, Discount = 0, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
+                new Product { Id = 3, Name = "Friet Klein", CategoryId = 1, Price = 2.5, Discount = 0, AllowsSauces = true, ImageLink = "Frietenmandje.png" },
+                new Product { Id = 4, Name = "Bitterballen", CategoryId = 2, Price = 4.0, Discount = 0, AllowsSauces = true, ImageLink = "Bitterballen.png" },
+                new Product { Id = 5, Name = "Frikandel Speciaal", CategoryId = 2, Price = 2.5, Discount = 0, AllowsSauces = true, ImageLink = "frikandelspeciaal.png" },
+                new Product { Id = 6, Name = "Frikandel XXL", CategoryId = 2, Price = 5.0, Discount = 0, AllowsSauces = true, ImageLink = "frikandelXXL.png" },
+                new Product { Id = 7, Name = "Cola", CategoryId = 3, Price = 3.0, Discount = 0, AllowsSauces = false, ImageLink = "Cola.png" },
+                new Product { Id = 8, Name = "Fanta", CategoryId = 3, Price = 3.0, Discount = 0, AllowsSauces = false, ImageLink = "fanta.png" },
+                new Product { Id = 9, Name = "Cola Light", CategoryId = 3, Price = 3.0, Discount = 0, AllowsSauces = false, ImageLink = "ColaLight.png" },
+                new Product { Id = 10, Name = "Cola Zero", CategoryId = 3, Price = 3.0, Discount = 0, AllowsSauces = false, ImageLink = "ColaZero.png" }
             );
 
             // Customer seeding
@@ -67,8 +67,8 @@ namespace Fridayfrietday
 
             // Order seeding
             modelBuilder.Entity<Order>().HasData(
-                new Order { Id = 1, TotalPrice = 11.0, CustomerId = 1 },
-                new Order { Id = 2, TotalPrice = 3.5, CustomerId = 2 }
+                new Order { Id = 1, TotalPrice = 11.0, CustomerId = 1, OrderDate = DateTime.Now, PickupNumber = 1, OrderStatus = "Opgehaald" },
+                new Order { Id = 2, TotalPrice = 3.5, CustomerId = 2, OrderDate = DateTime.Now, PickupNumber = 2, OrderStatus = "Opgehaald" }
             );
 
             // OrderDetail seeding

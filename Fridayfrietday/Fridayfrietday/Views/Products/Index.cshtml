@@ -13,7 +13,7 @@
         <h1 class="display-3 mb-3 animated slideInDown">Bestellen</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a class="text-body" href="/Home">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-body" href="Startpagina">Startpagina</a></li>
                 <li class="breadcrumb-item text-dark active" aria-current="page">Bestellen</li>
             </ol>
         </nav>
@@ -26,7 +26,7 @@
         <div class="row g-0 gx-5 align-items-end">
             <div class="col-lg-6">
                 <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-                    <h1 class="display-5 mb-3">Our Products</h1>
+                    <h1 class="display-5 mb-3">Onze producten</h1>
                     <p>Bekijk ons overheerlijk assortiment van snacks en verfrissende drankjes</p>
                 </div>
             </div>
@@ -52,35 +52,51 @@
                             <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="product-item">
                                     <div class="position-relative bg-light overflow-hidden">
-                                        <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
+                                        @if (product.AllowsSauces == true)
+                                        {
+                                            <a href="#" class="customize-btn" data-product-id="@product.Id" data-product-name="@product.Name">
+                                                <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a>
+                                                <img class="img-fluid w-100" src="~/Images/@product.ImageLink" alt="@product.Name">
+                                            </a>
+                                        }
                                     </div>
                                     <div class="text-center p-4">
-                                        <a class="d-block h5 mb-2" href="#">@product.Name</a>
-                                        <span class="text-primary me-1">€ @product.Price.ToString("0.00")</span>
+                                        <a class="d-block h5 mb-2">@product.Name</a>
+                                        @if (product.Discount == 0)
+                                        {
+                                            <span class="text-primary me-1">€ @product.Price.ToString("0.00")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-primary me-1"><del>€ @product.Price.ToString("0.00")</del></span> <!--doorgestreept-->
+                                            <span class="text-primary me-1">€ @((product.Price * (1 - product.Discount)).ToString("0.00"))</span>
+                                        }
                                     </div>
                                     <div class="d-flex border-top">
-                                        <small class="w-50 text-center border-end py-2">
-                                            <a class="text-body customize-btn" href="#" data-product-id="@product.Id">
-                                                <i class="fa fa-eye text-primary me-2"></i> Customize
-                                            </a>
-
-
-                                        </small>
+                                        @if (product.AllowsSauces)
+                                        {
+                                            <small class="w-50 text-center border-end py-2">
+                                                <a class="text-body customize-btn" href="#" data-product-id="@product.Id" data-product-name="@product.Name">
+                                                    <i class="fa fa-eye text-primary me-2"></i> Bewerken
+                                                </a>
+                                            </small>
+                                        }
                                         <small class="w-50 text-center py-2">
-                                            <form id="addToCartForm" method="post">
+                                            <form method="post">
                                                 <input type="hidden" name="ProductId" value="@product.Id" />
-                                                <input type="hidden" name="SelectedSauceIds" id="selectedSauceIds" />
+                                                <input type="hidden" name="SelectedSauceIds" id="selectedSauceIds-@product.Id" />
                                                 <input type="hidden" name="Quantity" value="1" />
-                                                <button type="button" class="btn btn-primary" onclick="addToCart(@product.Id)">
-                                                    <i class="fa fa-shopping-bag text-white me-2"></i> Add to cart
+                                                <button type="button" class="btn btn-primary add-to-cart-btn" data-product-id="@product.Id">
+                                                    <i class="fa fa-shopping-bag text-white me-2"></i> Toevoegen
                                                 </button>
                                             </form>
-
-
                                         </small>
-
                                     </div>
-
                                 </div>
                             </div>
                         }
@@ -90,53 +106,56 @@
         </div>
     </div>
 </div>
+
+<div class="text-md-end  wow fadeIn" data-wow-delay="0.5s">
+    <a class="btn btn-lg btn-secondary rounded-pill py-3 px-5" href="Cart/ViewCart">Winkelwagen bekijken</a>
+</div>
+
 <!-- Modal for Customizing Product -->
 <div class="modal fade" id="customiseModal" tabindex="-1" aria-labelledby="customiseModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="customiseModalLabel">Customize Your Product</h5>
+                <h5 class="modal-title" id="customiseModalLabel">Voeg Sauzen toe aan je product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="customizeForm" method="post">
                     <input type="hidden" name="ProductId" id="modalProductId" />
                     <div class="mb-3">
-                        <label for="sauces" class="form-label">Select Sauces:</label>
+                        <label for="sauces" class="form-label">Selecteer Sauzen:</label>
                         <div id="sauceOptions" class="form-check">
-                            @foreach (var sauce in Model.AvailableSauces) 
+                            @foreach (var sauce in Model.AvailableSauces)
                             {
                                 <div>
                                     <input class="form-check-input" type="checkbox" name="SelectedSauces" value="@sauce.Id" id="sauce-@sauce.Id" />
-                                    <label class="form-check-label" for="sauce-@sauce.Id">@sauce.Name</label>
+                                    <label class="form-check-label" for="sauce-@sauce.Id">
+                                        @sauce.Name - &euro;@sauce.Price
+                                    </label>
                                 </div>
                             }
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantity:</label>
+                        <label for="quantity" class="form-label">Hoeveelheid:</label>
                         <input type="number" id="quantity" name="Quantity" class="form-control" value="1" min="1" />
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="customizeAndAddToCart()">Add to Cart</button>
+                <button type="button" class="btn btn-primary" onclick="customizeAndAddToCart()">Toevoegen</button>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
 <!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="lib/wow/wow.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/waypoints/waypoints.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="~/lib/wow/wow.min.js"></script>
+<script src="~/lib/easing/easing.min.js"></script>
+<script src="~/lib/waypoints/waypoints.min.js"></script>
+<script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
 <script src="~/js/Product.js"></script>
-<!-- Template Javascript -->
-<script src="js/main.js"></script>
+<script src="~/js/main.js"></script>
+

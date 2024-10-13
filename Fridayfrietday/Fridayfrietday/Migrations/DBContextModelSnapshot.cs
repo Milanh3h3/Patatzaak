@@ -35,10 +35,6 @@ namespace Fridayfrietday.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<string>("Picture")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
@@ -47,20 +43,17 @@ namespace Fridayfrietday.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Frieten",
-                            Picture = "Frietenmandje.png"
+                            Name = "Frieten"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Snacks",
-                            Picture = "snackslogo.png"
+                            Name = "Snacks"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Dranken",
-                            Picture = "DrinksLogo.png"
+                            Name = "Dranken"
                         });
                 });
 
@@ -105,8 +98,21 @@ namespace Fridayfrietday.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PickupNumber")
+                        .HasColumnType("int");
+
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
+
+                    b.Property<DateTime?>("VerwachteOphaaltijd")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -119,12 +125,18 @@ namespace Fridayfrietday.Migrations
                         {
                             Id = 1,
                             CustomerId = 1,
+                            OrderDate = new DateTime(2024, 10, 10, 16, 55, 38, 426, DateTimeKind.Local).AddTicks(7273),
+                            OrderStatus = "Opgehaald",
+                            PickupNumber = 1,
                             TotalPrice = 11.0
                         },
                         new
                         {
                             Id = 2,
                             CustomerId = 2,
+                            OrderDate = new DateTime(2024, 10, 10, 16, 55, 38, 426, DateTimeKind.Local).AddTicks(7278),
+                            OrderStatus = "Opgehaald",
+                            PickupNumber = 2,
                             TotalPrice = 3.5
                         });
                 });
@@ -229,8 +241,10 @@ namespace Fridayfrietday.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
                     b.Property<string>("ImageLink")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -253,6 +267,7 @@ namespace Fridayfrietday.Migrations
                             Id = 1,
                             AllowsSauces = true,
                             CategoryId = 1,
+                            Discount = 0.0,
                             ImageLink = "Frietenmandje.png",
                             Name = "Friet Groot",
                             Price = 3.5
@@ -262,6 +277,7 @@ namespace Fridayfrietday.Migrations
                             Id = 2,
                             AllowsSauces = true,
                             CategoryId = 1,
+                            Discount = 0.0,
                             ImageLink = "Frietenmandje.png",
                             Name = "Friet Medium",
                             Price = 3.0
@@ -271,6 +287,7 @@ namespace Fridayfrietday.Migrations
                             Id = 3,
                             AllowsSauces = true,
                             CategoryId = 1,
+                            Discount = 0.0,
                             ImageLink = "Frietenmandje.png",
                             Name = "Friet Klein",
                             Price = 2.5
@@ -280,6 +297,7 @@ namespace Fridayfrietday.Migrations
                             Id = 4,
                             AllowsSauces = true,
                             CategoryId = 2,
+                            Discount = 0.0,
                             ImageLink = "Bitterballen.png",
                             Name = "Bitterballen",
                             Price = 4.0
@@ -289,8 +307,9 @@ namespace Fridayfrietday.Migrations
                             Id = 5,
                             AllowsSauces = true,
                             CategoryId = 2,
+                            Discount = 0.0,
                             ImageLink = "frikandelspeciaal.png",
-                            Name = "FrikandelSpeciaal",
+                            Name = "Frikandel Speciaal",
                             Price = 2.5
                         },
                         new
@@ -298,6 +317,7 @@ namespace Fridayfrietday.Migrations
                             Id = 6,
                             AllowsSauces = true,
                             CategoryId = 2,
+                            Discount = 0.0,
                             ImageLink = "frikandelXXL.png",
                             Name = "Frikandel XXL",
                             Price = 5.0
@@ -307,6 +327,7 @@ namespace Fridayfrietday.Migrations
                             Id = 7,
                             AllowsSauces = false,
                             CategoryId = 3,
+                            Discount = 0.0,
                             ImageLink = "Cola.png",
                             Name = "Cola",
                             Price = 3.0
@@ -316,6 +337,7 @@ namespace Fridayfrietday.Migrations
                             Id = 8,
                             AllowsSauces = false,
                             CategoryId = 3,
+                            Discount = 0.0,
                             ImageLink = "fanta.png",
                             Name = "Fanta",
                             Price = 3.0
@@ -325,6 +347,7 @@ namespace Fridayfrietday.Migrations
                             Id = 9,
                             AllowsSauces = false,
                             CategoryId = 3,
+                            Discount = 0.0,
                             ImageLink = "ColaLight.png",
                             Name = "Cola Light",
                             Price = 3.0
@@ -334,6 +357,7 @@ namespace Fridayfrietday.Migrations
                             Id = 10,
                             AllowsSauces = false,
                             CategoryId = 3,
+                            Discount = 0.0,
                             ImageLink = "ColaZero.png",
                             Name = "Cola Zero",
                             Price = 3.0
@@ -373,7 +397,7 @@ namespace Fridayfrietday.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2024, 9, 21, 14, 0, 58, 503, DateTimeKind.Local).AddTicks(6829),
+                            Date = new DateTime(2024, 9, 30, 16, 55, 38, 426, DateTimeKind.Local).AddTicks(7394),
                             Description = "Heerlijke frietjes!",
                             Name = "John Doe",
                             Stars = 4.5m
@@ -381,7 +405,7 @@ namespace Fridayfrietday.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2024, 9, 26, 14, 0, 58, 503, DateTimeKind.Local).AddTicks(6887),
+                            Date = new DateTime(2024, 10, 5, 16, 55, 38, 426, DateTimeKind.Local).AddTicks(7401),
                             Description = "Snacks waren goed, maar had liever meer saus.",
                             Name = "Jane Smith",
                             Stars = 3.5m
